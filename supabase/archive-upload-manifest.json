@@ -1,0 +1,967 @@
+{
+  "bucket": "county-documents",
+  "prefix": "county-archive",
+  "generated_at": "2026-10-23T15:59:35.671Z",
+  "file_count": 158,
+  "total_bytes": 20712702,
+  "meeting_records": {
+    "inserted": 0,
+    "updated": 126,
+    "total": 126
+  },
+  "general_document_records": {
+    "inserted": 0,
+    "updated": 24,
+    "total": 24
+  },
+  "files": [
+    {
+      "archive_path": "2023/Agendas/December_19_2023_Regular_Meeting.pdf",
+      "storage_path": "county-archive/2023/Agendas/December_19_2023_Regular_Meeting.pdf",
+      "size": 21839,
+      "sha256": "ecbd87f688e0f61397e6ac41e80b8a093aa30f9e5f42816f148bed461a3ffbaa"
+    },
+    {
+      "archive_path": "2023/Agendas/November_21_2023_Regular_Meeting.pdf",
+      "storage_path": "county-archive/2023/Agendas/November_21_2023_Regular_Meeting.pdf",
+      "size": 17743,
+      "sha256": "994db69e4ae221f6337ccaf1d521e825198dac3fcc1de33f49c996c2c08dfbff"
+    },
+    {
+      "archive_path": "2023/Minutes/December_19_2023_Regular_Meeting.pdf",
+      "storage_path": "county-archive/2023/Minutes/December_19_2023_Regular_Meeting.pdf",
+      "size": 94720,
+      "sha256": "e0c4427114166d4da60613d7edb066f2ab146387c1ef961d4fee5faa9f9acb8c"
+    },
+    {
+      "archive_path": "2023/Minutes/November_13_2023_Recessed_Meeting.pdf",
+      "storage_path": "county-archive/2023/Minutes/November_13_2023_Recessed_Meeting.pdf",
+      "size": 16184,
+      "sha256": "433c360e41b47efec5f27b9923a8b410b7b3f63019108a0904a208847b8cbc23"
+    },
+    {
+      "archive_path": "2023/Minutes/November_2_2023_Recessed_Meeting.pdf",
+      "storage_path": "county-archive/2023/Minutes/November_2_2023_Recessed_Meeting.pdf",
+      "size": 17147,
+      "sha256": "821f35f35ba4211a6367ce069429c3c7d7cf655e0f2f2b4b36c66571f819ac0f"
+    },
+    {
+      "archive_path": "2023/Minutes/November_21_2023_Regular_Meeting.pdf",
+      "storage_path": "county-archive/2023/Minutes/November_21_2023_Regular_Meeting.pdf",
+      "size": 66118,
+      "sha256": "3332d5ab25dbcc824a9b888815c058da74224e127643216386811993fe0ac10e"
+    },
+    {
+      "archive_path": "2024/Agendas/April_162024_Regular_Meeting.pdf",
+      "storage_path": "county-archive/2024/Agendas/April_162024_Regular_Meeting.pdf",
+      "size": 845704,
+      "sha256": "83d5dc41e5ddd8d158050c90ecccaa7bd084febeabecae0668d7e6133a17f64f"
+    },
+    {
+      "archive_path": "2024/Agendas/August_20_2024_Regular_Meeting.pdf",
+      "storage_path": "county-archive/2024/Agendas/August_20_2024_Regular_Meeting.pdf",
+      "size": 21094,
+      "sha256": "a5b61c59a43550683c6ac6be7c334e2a42190a4866046250aacef3cdf451c6ce"
+    },
+    {
+      "archive_path": "2024/Agendas/December_17_2024_Regular_Meeting.pdf",
+      "storage_path": "county-archive/2024/Agendas/December_17_2024_Regular_Meeting.pdf",
+      "size": 21195,
+      "sha256": "3dbe7a29555632ab2edd4ccf5cc260147bceb2ef2ce0635782b7040d7bc8f4d7"
+    },
+    {
+      "archive_path": "2024/Agendas/February_20_2024_Regular_Meeting.pdf",
+      "storage_path": "county-archive/2024/Agendas/February_20_2024_Regular_Meeting.pdf",
+      "size": 19399,
+      "sha256": "32926d52b82ac583902c2e5298579a9a8e4901e94f276f1be008b1bfae949f01"
+    },
+    {
+      "archive_path": "2024/Agendas/January_16_2024_Annual_Meeting.pdf",
+      "storage_path": "county-archive/2024/Agendas/January_16_2024_Annual_Meeting.pdf",
+      "size": 17879,
+      "sha256": "8ff51f4f8fbb55839695063f8c22a2cb618d8d0256c2018ed4b9c367fd475318"
+    },
+    {
+      "archive_path": "2024/Agendas/July_16_2024_Regular_Meeting.pdf",
+      "storage_path": "county-archive/2024/Agendas/July_16_2024_Regular_Meeting.pdf",
+      "size": 20675,
+      "sha256": "3639e86bc942281da7018deadb95ccf90fb851b70f36bf512fb6660b6b2a1a4e"
+    },
+    {
+      "archive_path": "2024/Agendas/June_20_2024_Public_Hearing.pdf",
+      "storage_path": "county-archive/2024/Agendas/June_20_2024_Public_Hearing.pdf",
+      "size": 1461085,
+      "sha256": "9aa1f5510c7c0df0eabb129cdfc5b1e8df0dc636b8f3b99d3390f5d8453a51df"
+    },
+    {
+      "archive_path": "2024/Agendas/March_19_2024_Regular_Meeting.pdf",
+      "storage_path": "county-archive/2024/Agendas/March_19_2024_Regular_Meeting.pdf",
+      "size": 19842,
+      "sha256": "8522451f8fefa3d2f378a1988524dd3be2318955946f47b031907b12646755c7"
+    },
+    {
+      "archive_path": "2024/Agendas/May_21_2024_Regular_Meeting.pdf",
+      "storage_path": "county-archive/2024/Agendas/May_21_2024_Regular_Meeting.pdf",
+      "size": 20705,
+      "sha256": "783737ec269ff3945705d576741f530e62b70fb2599b6a62e3d225278ab6b41c"
+    },
+    {
+      "archive_path": "2024/Agendas/November_19_2024_Regular_Meeting.pdf",
+      "storage_path": "county-archive/2024/Agendas/November_19_2024_Regular_Meeting.pdf",
+      "size": 17309,
+      "sha256": "786a6dcb3b8b803ee203daa4c37f20dbf0def29fff2ac15047faf9b1aca00e2b"
+    },
+    {
+      "archive_path": "2024/Agendas/October_15_2024_Regular_Meeting.pdf",
+      "storage_path": "county-archive/2024/Agendas/October_15_2024_Regular_Meeting.pdf",
+      "size": 22038,
+      "sha256": "b517c50e4eeb4745d3ddbbe24c70d354a550b18e18649dd0b5e097e41afddc86"
+    },
+    {
+      "archive_path": "2024/Agendas/September_17_2024_Regular_Meeting.pdf",
+      "storage_path": "county-archive/2024/Agendas/September_17_2024_Regular_Meeting.pdf",
+      "size": 16477,
+      "sha256": "141a93e82d04990d02d53d37c2b57f5b599180cdc19dc2da7b00d7c912480cdd"
+    },
+    {
+      "archive_path": "2024/Minutes/April_16_2024_Regular_Meeting.pdf",
+      "storage_path": "county-archive/2024/Minutes/April_16_2024_Regular_Meeting.pdf",
+      "size": 70875,
+      "sha256": "4d69e173690bfdbdfd7867bef3be71a9c295e93baf0bb41f6461e28fa7ab20cf"
+    },
+    {
+      "archive_path": "2024/Minutes/April_25_2024_Recessed_Meeting.pdf",
+      "storage_path": "county-archive/2024/Minutes/April_25_2024_Recessed_Meeting.pdf",
+      "size": 25008,
+      "sha256": "75d958a3d347f9fbf3c880b52cb9cbaabb06ccbe07a4bba1e75ba2fdad50d6f7"
+    },
+    {
+      "archive_path": "2024/Minutes/August_1_2024_Called_Meeting.pdf",
+      "storage_path": "county-archive/2024/Minutes/August_1_2024_Called_Meeting.pdf",
+      "size": 17896,
+      "sha256": "b2e1cb0238d636c7af03f10c75e8008ded73513ce872ea2fa3ee48019df7bbd7"
+    },
+    {
+      "archive_path": "2024/Minutes/August_20_2024_Regular_Meeting.pdf",
+      "storage_path": "county-archive/2024/Minutes/August_20_2024_Regular_Meeting.pdf",
+      "size": 140715,
+      "sha256": "5f1517a99a2df94f5d3d2a52bae751015e1491c889e84395c68f5183855f3d98"
+    },
+    {
+      "archive_path": "2024/Minutes/December_17_2024_Regular_Meeting.pdf",
+      "storage_path": "county-archive/2024/Minutes/December_17_2024_Regular_Meeting.pdf",
+      "size": 94224,
+      "sha256": "d62c0a54c73411f5a461e7878a015e3288fe1cc72adba5041fda7a49fee6554d"
+    },
+    {
+      "archive_path": "2024/Minutes/February_20_2024_Regular_Meeting.pdf",
+      "storage_path": "county-archive/2024/Minutes/February_20_2024_Regular_Meeting.pdf",
+      "size": 107751,
+      "sha256": "4a8ec5d179b00e48b8102236d58f2faa9ba99fa0db5e599cc5337fad77ef8fb8"
+    },
+    {
+      "archive_path": "2024/Minutes/February_8_2024_Recessed_Meeting.pdf",
+      "storage_path": "county-archive/2024/Minutes/February_8_2024_Recessed_Meeting.pdf",
+      "size": 37322,
+      "sha256": "606d94cfe33f145dd6b730d43a1d82d08dd3cdba5f6d6aefb38a6246c001ddf7"
+    },
+    {
+      "archive_path": "2024/Minutes/January_18_2024_Annual_Meeting.pdf",
+      "storage_path": "county-archive/2024/Minutes/January_18_2024_Annual_Meeting.pdf",
+      "size": 134686,
+      "sha256": "5a9ee1ead4550b55a8ed17769a4388daef326262a98f5d54f3a0bf90f1a7658f"
+    },
+    {
+      "archive_path": "2024/Minutes/July_16_2024_Regular_meeting.pdf",
+      "storage_path": "county-archive/2024/Minutes/July_16_2024_Regular_meeting.pdf",
+      "size": 102076,
+      "sha256": "04c76aec7f3651bab5735c77d16d5d1f542dd8429ade5064f2ee06d40873b1c1"
+    },
+    {
+      "archive_path": "2024/Minutes/June_18_2024_Regular_Meeting.pdf",
+      "storage_path": "county-archive/2024/Minutes/June_18_2024_Regular_Meeting.pdf",
+      "size": 132213,
+      "sha256": "4a337019671cf8d65c68b8db7309124252a7e732fe993a7928012a7d32fdda97"
+    },
+    {
+      "archive_path": "2024/Minutes/June_18_2024_SSYP_Public_Hearing.pdf",
+      "storage_path": "county-archive/2024/Minutes/June_18_2024_SSYP_Public_Hearing.pdf",
+      "size": 22211,
+      "sha256": "c389ffab4ea6e20296432a5f590abe04f407bb1ba4d610eaa882cede3d64175e"
+    },
+    {
+      "archive_path": "2024/Minutes/June_20_2024_Recessed_Meeting.pdf",
+      "storage_path": "county-archive/2024/Minutes/June_20_2024_Recessed_Meeting.pdf",
+      "size": 107907,
+      "sha256": "f9ba3d102f61e4cec28983eec81200696d9811ebd330d243e65d56547b2e4331"
+    },
+    {
+      "archive_path": "2024/Minutes/June_25_2024_Recessed_Meeting.pdf",
+      "storage_path": "county-archive/2024/Minutes/June_25_2024_Recessed_Meeting.pdf",
+      "size": 41246,
+      "sha256": "ae9c2c2f4fc5ca05ce630444ce501c95e79f22df02e5a9a197c00c40672b583d"
+    },
+    {
+      "archive_path": "2024/Minutes/June_27_2024_Recessed_Meeting.pdf",
+      "storage_path": "county-archive/2024/Minutes/June_27_2024_Recessed_Meeting.pdf",
+      "size": 79111,
+      "sha256": "d3e91c050688da21e1fed380b6c06750f9752b4a86e52e84d11d90f778e239aa"
+    },
+    {
+      "archive_path": "2024/Minutes/June_4_2024_Recessed_Meeting.pdf",
+      "storage_path": "county-archive/2024/Minutes/June_4_2024_Recessed_Meeting.pdf",
+      "size": 33256,
+      "sha256": "0d8ac4122168d84f2584e5e66d0e8ce02bdcc6b1d73154ba2ef0e7b4e6959859"
+    },
+    {
+      "archive_path": "2024/Minutes/June_6_2024_Recessed_Meeting.pdf",
+      "storage_path": "county-archive/2024/Minutes/June_6_2024_Recessed_Meeting.pdf",
+      "size": 61576,
+      "sha256": "2d37836808c28989375e42c34bf560cd71d4577cf4210ab085735c442b12b423"
+    },
+    {
+      "archive_path": "2024/Minutes/March_19_2024_Regular_Meeting.pdf",
+      "storage_path": "county-archive/2024/Minutes/March_19_2024_Regular_Meeting.pdf",
+      "size": 126582,
+      "sha256": "69db48e82f96dfdec6c1ab838240e554823fbe50b40a55cb75ce86883dbfe11b"
+    },
+    {
+      "archive_path": "2024/Minutes/May_2_2024_Recessed_Meeting.pdf",
+      "storage_path": "county-archive/2024/Minutes/May_2_2024_Recessed_Meeting.pdf",
+      "size": 22309,
+      "sha256": "7e406402e258e4683866282e127c6e70b826fd54f6d91323f9fc2fcc5a7bcc7d"
+    },
+    {
+      "archive_path": "2024/Minutes/May_21_2024_Regular_Meeting.pdf",
+      "storage_path": "county-archive/2024/Minutes/May_21_2024_Regular_Meeting.pdf",
+      "size": 94236,
+      "sha256": "aad3d62183c343a35949863887c08dee3c02baf3c7fd94ced9c9f12bc5df7c64"
+    },
+    {
+      "archive_path": "2024/Minutes/May_28_2024_Recessed_Meeting.pdf",
+      "storage_path": "county-archive/2024/Minutes/May_28_2024_Recessed_Meeting.pdf",
+      "size": 28158,
+      "sha256": "1e730503eca5006976e110f16b1a0436de96d845028608238a7521726b4f8f80"
+    },
+    {
+      "archive_path": "2024/Minutes/May_7_2024_Recessed_Meeting.pdf",
+      "storage_path": "county-archive/2024/Minutes/May_7_2024_Recessed_Meeting.pdf",
+      "size": 32787,
+      "sha256": "cb0342fca3f06d8ac90a8f1ff0097cde2353bb15ebb56f96b1b67a927370ad50"
+    },
+    {
+      "archive_path": "2024/Minutes/November_19_2024_Regular_Meeting.pdf",
+      "storage_path": "county-archive/2024/Minutes/November_19_2024_Regular_Meeting.pdf",
+      "size": 68409,
+      "sha256": "24781aadb948e7dda9435692dec211dc955b2a47efca26edcf17aaf561953814"
+    },
+    {
+      "archive_path": "2024/Minutes/October_15_2024_Regular_Meeting.pdf",
+      "storage_path": "county-archive/2024/Minutes/October_15_2024_Regular_Meeting.pdf",
+      "size": 111904,
+      "sha256": "848f5299611b9a04579188b7aa73f05a53814a9db06a0486bf991441a6ad20be"
+    },
+    {
+      "archive_path": "2024/Minutes/October_29_2024_Recessed_Meeting.pdf",
+      "storage_path": "county-archive/2024/Minutes/October_29_2024_Recessed_Meeting.pdf",
+      "size": 32466,
+      "sha256": "df8b79e1139f2f46c55fa4240ba0be4d3f3f804867f9c58edcea7a666271da6f"
+    },
+    {
+      "archive_path": "2024/Minutes/October_3_2024_Recessed_Meeting.pdf",
+      "storage_path": "county-archive/2024/Minutes/October_3_2024_Recessed_Meeting.pdf",
+      "size": 35808,
+      "sha256": "ea912f08b49462d782f920e09c3b50fab6a98bbecfc3337215ae08fe0e9ae3d8"
+    },
+    {
+      "archive_path": "2024/Minutes/September_17_2024_Regular_Meeting.pdf",
+      "storage_path": "county-archive/2024/Minutes/September_17_2024_Regular_Meeting.pdf",
+      "size": 85247,
+      "sha256": "a6dec1be1379d1078848367734a3aa78c814c655a7bef373f5c10c8d55136c53"
+    },
+    {
+      "archive_path": "2025/Agendas/April_15_2025_Regular_Meeting.pdf",
+      "storage_path": "county-archive/2025/Agendas/April_15_2025_Regular_Meeting.pdf",
+      "size": 20712,
+      "sha256": "588efecc2acd0661284f0770c6f75be64873c4f5a6464ead74cb619806dfdc97"
+    },
+    {
+      "archive_path": "2025/Agendas/April_24_2025_Recessed_Meeting.pdf",
+      "storage_path": "county-archive/2025/Agendas/April_24_2025_Recessed_Meeting.pdf",
+      "size": 9246,
+      "sha256": "0b1093aeda8293e60142692990b13c6756c8daa0ccc9061e01c015026449cce3"
+    },
+    {
+      "archive_path": "2025/Agendas/August_19_2025_Regular_Meeting.pdf",
+      "storage_path": "county-archive/2025/Agendas/August_19_2025_Regular_Meeting.pdf",
+      "size": 26107,
+      "sha256": "18e3690965318e31ecb9d8917f0a13c3a3b1712928faca9addb4d0e43b723a34"
+    },
+    {
+      "archive_path": "2025/Agendas/December_16_2025_Regular_Meeting.pdf",
+      "storage_path": "county-archive/2025/Agendas/December_16_2025_Regular_Meeting.pdf",
+      "size": 17260,
+      "sha256": "974960b845c48b6f4d8bcfa7d36440d0f1f876b97f3968429fd8728af57aaf84"
+    },
+    {
+      "archive_path": "2025/Agendas/February_18_2025_Regular_Meeting.pdf",
+      "storage_path": "county-archive/2025/Agendas/February_18_2025_Regular_Meeting.pdf",
+      "size": 19429,
+      "sha256": "201bc9c701c705f4f96fe97a5a559733f312ad3a2ab812ca7d233e0abf628bf5"
+    },
+    {
+      "archive_path": "2025/Agendas/January_21_2025_Annual_Meeting.pdf",
+      "storage_path": "county-archive/2025/Agendas/January_21_2025_Annual_Meeting.pdf",
+      "size": 16544,
+      "sha256": "2b56ca175824f63365faf0528c05a24cea22f506daa797f2ef479b85d0bcf87a"
+    },
+    {
+      "archive_path": "2025/Agendas/July_152025_Regular_Meeting.pdf",
+      "storage_path": "county-archive/2025/Agendas/July_152025_Regular_Meeting.pdf",
+      "size": 14830,
+      "sha256": "ead70d4ff81c0add4011f95fe92d95e05fc5d331354aae52bb654fcad4a56519"
+    },
+    {
+      "archive_path": "2025/Agendas/June_12_2025_Recessed_Meeting.pdf",
+      "storage_path": "county-archive/2025/Agendas/June_12_2025_Recessed_Meeting.pdf",
+      "size": 158530,
+      "sha256": "1ee464ebbb46cb1a869abef9fdc7a19eb62129987c72ed7618cf005cc26dfe81"
+    },
+    {
+      "archive_path": "2025/Agendas/June_17_2025_Regular_Meeting.pdf",
+      "storage_path": "county-archive/2025/Agendas/June_17_2025_Regular_Meeting.pdf",
+      "size": 70237,
+      "sha256": "9a2736d72d9e488893ed845dd2abd6175d08cc11a6d29381858ceffbd8f78676"
+    },
+    {
+      "archive_path": "2025/Agendas/June_18_2025_Recessed_Meeting.pdf",
+      "storage_path": "county-archive/2025/Agendas/June_18_2025_Recessed_Meeting.pdf",
+      "size": 160153,
+      "sha256": "d5afe8bb65c7c39408bd0a92536b7d2efe87355615b67f52c2d29cfdd0d2d9fa"
+    },
+    {
+      "archive_path": "2025/Agendas/June_25_2025_Recessed_Meeting.pdf",
+      "storage_path": "county-archive/2025/Agendas/June_25_2025_Recessed_Meeting.pdf",
+      "size": 228582,
+      "sha256": "2e701d146cc13f001e797ea28e0d146fb931240e3a9b5a94f5fb2b70665adb3c"
+    },
+    {
+      "archive_path": "2025/Agendas/June_3_2025_Recessed_Meeting.pdf",
+      "storage_path": "county-archive/2025/Agendas/June_3_2025_Recessed_Meeting.pdf",
+      "size": 158745,
+      "sha256": "aac25b30796353940e746e14d6aad06fdc0568baabe4a3b435f93b192b558278"
+    },
+    {
+      "archive_path": "2025/Agendas/March_11_2025_Public_Hearing.pdf",
+      "storage_path": "county-archive/2025/Agendas/March_11_2025_Public_Hearing.pdf",
+      "size": 10923,
+      "sha256": "ea430a3ee53a2e6461620d8421f78ca8f92837cdc549241bba3a6bdbc3618c20"
+    },
+    {
+      "archive_path": "2025/Agendas/March_18_2025_Regular_Meeting.pdf",
+      "storage_path": "county-archive/2025/Agendas/March_18_2025_Regular_Meeting.pdf",
+      "size": 14754,
+      "sha256": "a181192f304efc07a7f09fdb46166f83b25e18a7dbcd3e391c55c79a9134ccdc"
+    },
+    {
+      "archive_path": "2025/Agendas/March_26_2025_Special_Called_Meeting.pdf",
+      "storage_path": "county-archive/2025/Agendas/March_26_2025_Special_Called_Meeting.pdf",
+      "size": 8895,
+      "sha256": "83b03048dbeb7583aa237df6d2f9e25098cc98d2a09a89ea7a0533145d043037"
+    },
+    {
+      "archive_path": "2025/Agendas/May_20_2025_Public_Hearing.pdf",
+      "storage_path": "county-archive/2025/Agendas/May_20_2025_Public_Hearing.pdf",
+      "size": 10058,
+      "sha256": "d9eaf0dca4788f8ee878665df5da92e2886a92afe9b56dd47875f4ea9b34ca4e"
+    },
+    {
+      "archive_path": "2025/Agendas/May_20_2025_Regular_Meeting.pdf",
+      "storage_path": "county-archive/2025/Agendas/May_20_2025_Regular_Meeting.pdf",
+      "size": 19395,
+      "sha256": "5521b41bf6e82a83b7dcf0555e783af8645b71d08060adf35bcf34a229bc0a87"
+    },
+    {
+      "archive_path": "2025/Agendas/May_28_2025_Recessed_Meeting.pdf",
+      "storage_path": "county-archive/2025/Agendas/May_28_2025_Recessed_Meeting.pdf",
+      "size": 198679,
+      "sha256": "dbeb16bf9b50d54e94b5eccd21349074ab2fa547ddbf93a3e0623929b75bfeb8"
+    },
+    {
+      "archive_path": "2025/Agendas/November_18_2025_Regular_Meeting.pdf",
+      "storage_path": "county-archive/2025/Agendas/November_18_2025_Regular_Meeting.pdf",
+      "size": 17689,
+      "sha256": "cf3a18f1685a021857a4bf577621e164cb53f393b0636eff4f90752188277867"
+    },
+    {
+      "archive_path": "2025/Agendas/November_3_2025_Special_Called_Meeting.pdf",
+      "storage_path": "county-archive/2025/Agendas/November_3_2025_Special_Called_Meeting.pdf",
+      "size": 8533,
+      "sha256": "b5ad0f812b05d52dd936cf51eb6ae166e80a9ecc407ea09b79d514c5fa0dd1f3"
+    },
+    {
+      "archive_path": "2025/Agendas/October_21_2025_Regular_Meeting.pdf",
+      "storage_path": "county-archive/2025/Agendas/October_21_2025_Regular_Meeting.pdf",
+      "size": 19776,
+      "sha256": "459f405c19ad724aa2ee730f52d0e4ed8fcccc0db963d37fb643a4d254f44d4a"
+    },
+    {
+      "archive_path": "2025/Agendas/September_162025_Regular_Meeting.pdf",
+      "storage_path": "county-archive/2025/Agendas/September_162025_Regular_Meeting.pdf",
+      "size": 20255,
+      "sha256": "6da2f2b4e2a24eddc96ae3f311bbcf01bf1d5793375bfdfc0e95c110e837edc2"
+    },
+    {
+      "archive_path": "2025/Minutes/April_15_2025_Regular_Meeting.pdf",
+      "storage_path": "county-archive/2025/Minutes/April_15_2025_Regular_Meeting.pdf",
+      "size": 95064,
+      "sha256": "1b6b43ccf0783907bd91fc5db84faff3414902f82281ff0b3a70c55a579aed83"
+    },
+    {
+      "archive_path": "2025/Minutes/April_24_2025_Recessed_Meeting.pdf",
+      "storage_path": "county-archive/2025/Minutes/April_24_2025_Recessed_Meeting.pdf",
+      "size": 42060,
+      "sha256": "d98d7c69c41f728fd7e04e7cabbc369b906c17ed73e31ecb11eb5d50a139e9fb"
+    },
+    {
+      "archive_path": "2025/Minutes/August_19_2025_Regular_Meeting.pdf",
+      "storage_path": "county-archive/2025/Minutes/August_19_2025_Regular_Meeting.pdf",
+      "size": 169987,
+      "sha256": "95d418ac2809af2ca239f75a12230d5395f993088f5ca7f59b69a00745622507"
+    },
+    {
+      "archive_path": "2025/Minutes/December_16_2025_Regular_Meeting.pdf",
+      "storage_path": "county-archive/2025/Minutes/December_16_2025_Regular_Meeting.pdf",
+      "size": 81447,
+      "sha256": "e9b58a8b30c46e1b3a9408394710f02bbc9c3205e4894e6f58820f8bf12c9ca7"
+    },
+    {
+      "archive_path": "2025/Minutes/February_18_2025_Regular_Meeting.pdf",
+      "storage_path": "county-archive/2025/Minutes/February_18_2025_Regular_Meeting.pdf",
+      "size": 200063,
+      "sha256": "46f5c6e89dcb513e4d200e8ecfeb6b05b3b3e1a833b312d1853ae59dc6d906f5"
+    },
+    {
+      "archive_path": "2025/Minutes/January_21_2025_Annual_Meeting.pdf",
+      "storage_path": "county-archive/2025/Minutes/January_21_2025_Annual_Meeting.pdf",
+      "size": 115940,
+      "sha256": "ca2e5e66a7f0dda103cd80abd0abdca487ade2601a0aafe3b9f1b3942e654cdd"
+    },
+    {
+      "archive_path": "2025/Minutes/July_15_2025_Regular_Meeting.pdf",
+      "storage_path": "county-archive/2025/Minutes/July_15_2025_Regular_Meeting.pdf",
+      "size": 77134,
+      "sha256": "bb315884af95deb7c1e3256a5613656b3d57519a302904eaa746e83cfdcee631"
+    },
+    {
+      "archive_path": "2025/Minutes/July_152025_Regular_Meeting.pdf",
+      "storage_path": "county-archive/2025/Minutes/July_152025_Regular_Meeting.pdf",
+      "size": 14830,
+      "sha256": "ead70d4ff81c0add4011f95fe92d95e05fc5d331354aae52bb654fcad4a56519"
+    },
+    {
+      "archive_path": "2025/Minutes/July_24_2025_Recessed_Meeting.pdf",
+      "storage_path": "county-archive/2025/Minutes/July_24_2025_Recessed_Meeting.pdf",
+      "size": 56061,
+      "sha256": "721dd088215953f5746a0ee84848e1f636c539e3c656a153fb685daba1ebb0a0"
+    },
+    {
+      "archive_path": "2025/Minutes/June_12_2025_Recessed_Meeting.pdf",
+      "storage_path": "county-archive/2025/Minutes/June_12_2025_Recessed_Meeting.pdf",
+      "size": 24174,
+      "sha256": "09b4626e6460db801f6bcd4f10547320600237d23559f9f0ec0122fc31a870ca"
+    },
+    {
+      "archive_path": "2025/Minutes/June_17_2025_Regular_Meeting.pdf",
+      "storage_path": "county-archive/2025/Minutes/June_17_2025_Regular_Meeting.pdf",
+      "size": 130703,
+      "sha256": "113fcab3eeb4c08601e1c42789e35d2fe3f07d77f456e65b4a241dec91fd9105"
+    },
+    {
+      "archive_path": "2025/Minutes/June_18_2025_Recessed_Meeting.pdf",
+      "storage_path": "county-archive/2025/Minutes/June_18_2025_Recessed_Meeting.pdf",
+      "size": 46254,
+      "sha256": "69a3fa5638111859aaa4a5dfdccd7da280691fa8bbb732258ba4d0766bdac0df"
+    },
+    {
+      "archive_path": "2025/Minutes/June_25_2025_Recessed_Meeting.pdf",
+      "storage_path": "county-archive/2025/Minutes/June_25_2025_Recessed_Meeting.pdf",
+      "size": 57125,
+      "sha256": "bc679520de2f010f32c5e0663b5e035c736c3326578313cb6c1d027c38ced532"
+    },
+    {
+      "archive_path": "2025/Minutes/June_3_2025_Recessed_Meeting.pdf",
+      "storage_path": "county-archive/2025/Minutes/June_3_2025_Recessed_Meeting.pdf",
+      "size": 53271,
+      "sha256": "3c12a287f5a9b4314d0e9281c6ef0543a067a7a370abedfabc96933c91ad0686"
+    },
+    {
+      "archive_path": "2025/Minutes/March_11_2025_Public_Hearing.pdf",
+      "storage_path": "county-archive/2025/Minutes/March_11_2025_Public_Hearing.pdf",
+      "size": 41598,
+      "sha256": "94e392cd7f2cfdf81d1671cb95b0c2cbe5f1f3e77208ca864294e6bfde828b1b"
+    },
+    {
+      "archive_path": "2025/Minutes/March_18_2025_Regular_Meeting.pdf",
+      "storage_path": "county-archive/2025/Minutes/March_18_2025_Regular_Meeting.pdf",
+      "size": 53866,
+      "sha256": "ae47f2d3026712c10ce7d81b0933d3060cb9198da463683065c79084c8e64618"
+    },
+    {
+      "archive_path": "2025/Minutes/March_26_2025_Special_Called_Meeting.pdf",
+      "storage_path": "county-archive/2025/Minutes/March_26_2025_Special_Called_Meeting.pdf",
+      "size": 44660,
+      "sha256": "fc78afae60425f1d87fedb56c4228b053dd392581b0363a644e0b01258f9d9d0"
+    },
+    {
+      "archive_path": "2025/Minutes/May_20_2025_Public_Hearing.pdf",
+      "storage_path": "county-archive/2025/Minutes/May_20_2025_Public_Hearing.pdf",
+      "size": 10058,
+      "sha256": "d9eaf0dca4788f8ee878665df5da92e2886a92afe9b56dd47875f4ea9b34ca4e"
+    },
+    {
+      "archive_path": "2025/Minutes/May_20_2025_Regular_Meeting.pdf",
+      "storage_path": "county-archive/2025/Minutes/May_20_2025_Regular_Meeting.pdf",
+      "size": 63433,
+      "sha256": "386797df9a9ed1210fa567dd14dc7692e694e1137c27536eed5a3bbdd573b66c"
+    },
+    {
+      "archive_path": "2025/Minutes/May_202025_Public_Hearing.pdf",
+      "storage_path": "county-archive/2025/Minutes/May_202025_Public_Hearing.pdf",
+      "size": 15164,
+      "sha256": "f8c22f745483eaba66b7a94f62a6c55d5fbcf9e50c67ed06e16ab911562afc9c"
+    },
+    {
+      "archive_path": "2025/Minutes/May_28_2025_Recessed_Meeting.pdf",
+      "storage_path": "county-archive/2025/Minutes/May_28_2025_Recessed_Meeting.pdf",
+      "size": 26800,
+      "sha256": "0b5c1e803bd947b8f4d23e1223cde42f19136b3aaf00a51d6c0cf53d9b60f3c2"
+    },
+    {
+      "archive_path": "2025/Minutes/November_18_2025_Regular_Meeting.pdf",
+      "storage_path": "county-archive/2025/Minutes/November_18_2025_Regular_Meeting.pdf",
+      "size": 75730,
+      "sha256": "12f339708a52347f5b1892623a3af74a5e84c34109a4a285cafb0ef3e5445a86"
+    },
+    {
+      "archive_path": "2025/Minutes/November_3_2025_Special_Called_Meeting.pdf",
+      "storage_path": "county-archive/2025/Minutes/November_3_2025_Special_Called_Meeting.pdf",
+      "size": 14686,
+      "sha256": "0ce03d791f453bdb83670a8d99b799297c41057f53c45db1f3af3769901a27ea"
+    },
+    {
+      "archive_path": "2025/Minutes/October_21_2025_Regular_Meeting.pdf",
+      "storage_path": "county-archive/2025/Minutes/October_21_2025_Regular_Meeting.pdf",
+      "size": 118713,
+      "sha256": "341f1b81e8e3d97e0ad06a8024c6861932d3b3fd0ce7f88fce082b7d9ddee7cc"
+    },
+    {
+      "archive_path": "2025/Minutes/September_16_2025_Regular_Meeting.pdf",
+      "storage_path": "county-archive/2025/Minutes/September_16_2025_Regular_Meeting.pdf",
+      "size": 101648,
+      "sha256": "bae511d5d85975d280540c9bfbf2d79ffd8762f8bd12a4d6f4d2529dc234f614"
+    },
+    {
+      "archive_path": "2025/Minutes/September_162025_Regular_Meeting.pdf",
+      "storage_path": "county-archive/2025/Minutes/September_162025_Regular_Meeting.pdf",
+      "size": 20255,
+      "sha256": "6da2f2b4e2a24eddc96ae3f311bbcf01bf1d5793375bfdfc0e95c110e837edc2"
+    },
+    {
+      "archive_path": "2026/Agendas/April_21_2026_Regular_Meeting.pdf",
+      "storage_path": "county-archive/2026/Agendas/April_21_2026_Regular_Meeting.pdf",
+      "size": 19074,
+      "sha256": "776ad3a4d46797e9e56cef4d58699ebe017445a148068c516e1b18df7d203826"
+    },
+    {
+      "archive_path": "2026/Agendas/April_28_2026_Special_Called_Meeting.pdf",
+      "storage_path": "county-archive/2026/Agendas/April_28_2026_Special_Called_Meeting.pdf",
+      "size": 61510,
+      "sha256": "995ba1081538be0b97e80cf2b9ec3a9aea5d63165ba7d3a8e08864b8e3150efb"
+    },
+    {
+      "archive_path": "2026/Agendas/August_18_2026_Regular_Meeting.pdf",
+      "storage_path": "county-archive/2026/Agendas/August_18_2026_Regular_Meeting.pdf",
+      "size": 19599,
+      "sha256": "882980479a22477985d7d2387cfced31a91a7ce03bb6924ee0375d67ba7a872a"
+    },
+    {
+      "archive_path": "2026/Agendas/February_17_2026_Regular_Meeting.pdf",
+      "storage_path": "county-archive/2026/Agendas/February_17_2026_Regular_Meeting.pdf",
+      "size": 15377,
+      "sha256": "295b3c81247df75c428d6d8f185226e6d9d8b966d0cdc1071d03d0f2ef8d12bd"
+    },
+    {
+      "archive_path": "2026/Agendas/January_20_2026_Regular_Meeting.pdf",
+      "storage_path": "county-archive/2026/Agendas/January_20_2026_Regular_Meeting.pdf",
+      "size": 816524,
+      "sha256": "38815356ed0f82588908ba129a3fc5dfe0e6eaca2cfdadbf5477b3e9e7f3dd1d"
+    },
+    {
+      "archive_path": "2026/Agendas/January_27_2026_Recessed_Meeting.pdf",
+      "storage_path": "county-archive/2026/Agendas/January_27_2026_Recessed_Meeting.pdf",
+      "size": 8846,
+      "sha256": "67207b4980478e6a565df3367cdd96c42a8531a4b9f0892857a6ad22c57b59f4"
+    },
+    {
+      "archive_path": "2026/Agendas/January_6_2026_Recessed_Meeting.pdf",
+      "storage_path": "county-archive/2026/Agendas/January_6_2026_Recessed_Meeting.pdf",
+      "size": 8658,
+      "sha256": "cf0cf9f6a6991dbb5a67684672a34d30d54bad3223f2191f82e1835dae7ae9cb"
+    },
+    {
+      "archive_path": "2026/Agendas/July_21_2026_Regular_Meeting.pdf",
+      "storage_path": "county-archive/2026/Agendas/July_21_2026_Regular_Meeting.pdf",
+      "size": 18343,
+      "sha256": "de3bade29f3a2e0862d1a7a9861a17dbbd56f97a4425c21c28c06b203b69304c"
+    },
+    {
+      "archive_path": "2026/Agendas/June_16_2026_Regular_Meeting.pdf",
+      "storage_path": "county-archive/2026/Agendas/June_16_2026_Regular_Meeting.pdf",
+      "size": 21632,
+      "sha256": "55078ada2668af40d9addcbdb4e314da60b829ca9f2539b777e04eb8f99ea6fd"
+    },
+    {
+      "archive_path": "2026/Agendas/June_18_2026_Recessed_Meeting.pdf",
+      "storage_path": "county-archive/2026/Agendas/June_18_2026_Recessed_Meeting.pdf",
+      "size": 14126,
+      "sha256": "684132584e15f010a51bdc23b20e67dc0028ae7539e7239568a2953fdfc862fc"
+    },
+    {
+      "archive_path": "2026/Agendas/June_2_2026_Recessed_Meeting.pdf",
+      "storage_path": "county-archive/2026/Agendas/June_2_2026_Recessed_Meeting.pdf",
+      "size": 9714,
+      "sha256": "6e6286b87bf4012f96251ad053a813424d9b7c0da3adaa8e922c58ca27308e92"
+    },
+    {
+      "archive_path": "2026/Agendas/June_29_2026_Recessed_Meeting.pdf",
+      "storage_path": "county-archive/2026/Agendas/June_29_2026_Recessed_Meeting.pdf",
+      "size": 10279,
+      "sha256": "c75077c4909a5f0d294f54fad3506cdb83049f7a7ccb61e99bab61f444041516"
+    },
+    {
+      "archive_path": "2026/Agendas/March_17_2026_Regular_Meeting.pdf",
+      "storage_path": "county-archive/2026/Agendas/March_17_2026_Regular_Meeting.pdf",
+      "size": 18001,
+      "sha256": "f76a6be7316e2b458101f36d3e2df3e21112e4dd8107a45ce2acd549576a4793"
+    },
+    {
+      "archive_path": "2026/Agendas/May_19_2026_Regular_Meeting.pdf",
+      "storage_path": "county-archive/2026/Agendas/May_19_2026_Regular_Meeting.pdf",
+      "size": 17777,
+      "sha256": "14e2278e8c58b94715c05746bc0c774b3a47c1f66723c5cdd8bd859340d8ae48"
+    },
+    {
+      "archive_path": "2026/Agendas/May_19_2026_SSYP_Public_Hearing.pdf",
+      "storage_path": "county-archive/2026/Agendas/May_19_2026_SSYP_Public_Hearing.pdf",
+      "size": 10137,
+      "sha256": "d38abc5aff9f48e550083ed4bb63e441115da2608db95d312dfc9cdfcb1b86d9"
+    },
+    {
+      "archive_path": "2026/Agendas/May_26_2026_Recessed_Meeting.pdf",
+      "storage_path": "county-archive/2026/Agendas/May_26_2026_Recessed_Meeting.pdf",
+      "size": 198170,
+      "sha256": "3404197c199b9cbe1d666f172918c5860025603025909acae02ba2c0080a2065"
+    },
+    {
+      "archive_path": "2026/Agendas/May_5_2026_Recessed_Meeting.pdf",
+      "storage_path": "county-archive/2026/Agendas/May_5_2026_Recessed_Meeting.pdf",
+      "size": 197251,
+      "sha256": "15b5bb2b20874d24a0465219e959b7eb18eb805610495d82b4a3f52a2390c8ba"
+    },
+    {
+      "archive_path": "2026/Agendas/Sept_15_2026_Recessed_Meeting.pdf",
+      "storage_path": "county-archive/2026/Agendas/Sept_15_2026_Recessed_Meeting.pdf",
+      "size": 8950,
+      "sha256": "8f645e6cdc4d3ca8e2b9e01fca10604d75846a35787467527c464011e0bca2b0"
+    },
+    {
+      "archive_path": "2026/Agendas/Sept_15_2026_Regular_Meeting.pdf",
+      "storage_path": "county-archive/2026/Agendas/Sept_15_2026_Regular_Meeting.pdf",
+      "size": 27817,
+      "sha256": "60cb38fdbdc965bb9b4bc2e51756985b4f3d2bd4fb381d10bf64fc67aa72abfe"
+    },
+    {
+      "archive_path": "2026/Minutes/April_21_2026_Regular_Meeting.pdf",
+      "storage_path": "county-archive/2026/Minutes/April_21_2026_Regular_Meeting.pdf",
+      "size": 137619,
+      "sha256": "971d7785f5ab5b52f0fd6e4008a600347feeac5d7f4fa3ab3209c8cdccb73491"
+    },
+    {
+      "archive_path": "2026/Minutes/April_28_2026_Special_Called_Meeting.pdf",
+      "storage_path": "county-archive/2026/Minutes/April_28_2026_Special_Called_Meeting.pdf",
+      "size": 43419,
+      "sha256": "115c60dd1b93bdc01b311a8fe2f1a87f7e9d55504a17911dd9005c7e9c738e6a"
+    },
+    {
+      "archive_path": "2026/Minutes/August_18_2026_Regular_Meeting.pdf",
+      "storage_path": "county-archive/2026/Minutes/August_18_2026_Regular_Meeting.pdf",
+      "size": 100034,
+      "sha256": "a2432d190bc2c1f8706133ec614a9872e0ba4bfb91bd2c562d2dea9e9120a834"
+    },
+    {
+      "archive_path": "2026/Minutes/February_17_2026_Regular_Meeting.pdf",
+      "storage_path": "county-archive/2026/Minutes/February_17_2026_Regular_Meeting.pdf",
+      "size": 93066,
+      "sha256": "9f42afd7f62f244aff18b7570bcdbdc6e3e6e624bf2d676c58abedcb2ebdeb39"
+    },
+    {
+      "archive_path": "2026/Minutes/January_20_2026_Annual_Meeting.pdf",
+      "storage_path": "county-archive/2026/Minutes/January_20_2026_Annual_Meeting.pdf",
+      "size": 139704,
+      "sha256": "82c11b18c998c2c47acbcb093c3d5e55066abe80a7af85b37b5e5ffa1ab3e5d1"
+    },
+    {
+      "archive_path": "2026/Minutes/January_20_2026_Regular_Meeting.pdf",
+      "storage_path": "county-archive/2026/Minutes/January_20_2026_Regular_Meeting.pdf",
+      "size": 816524,
+      "sha256": "38815356ed0f82588908ba129a3fc5dfe0e6eaca2cfdadbf5477b3e9e7f3dd1d"
+    },
+    {
+      "archive_path": "2026/Minutes/January_27_2026_Recessed_Meeting.pdf",
+      "storage_path": "county-archive/2026/Minutes/January_27_2026_Recessed_Meeting.pdf",
+      "size": 17733,
+      "sha256": "285c2d191989de5ea9ad0fe4ff1c7b696e19a2f9bf14bb183e7d7d935b0e287c"
+    },
+    {
+      "archive_path": "2026/Minutes/January_6_2026_Recessed_Meeting.pdf",
+      "storage_path": "county-archive/2026/Minutes/January_6_2026_Recessed_Meeting.pdf",
+      "size": 19523,
+      "sha256": "ff96f51dba8a522f42a1ce488cfa9e1e4fbae11724ae4f4e4e001e1280c9964f"
+    },
+    {
+      "archive_path": "2026/Minutes/July_21_2026_Reguar_Meeting.pdf",
+      "storage_path": "county-archive/2026/Minutes/July_21_2026_Reguar_Meeting.pdf",
+      "size": 100900,
+      "sha256": "1347550d8d52b5548a4d5056f7abdfca4c1e7128e5b5020fef1399e6a3e7052c"
+    },
+    {
+      "archive_path": "2026/Minutes/July_21_2026_Regular_Meeting.pdf",
+      "storage_path": "county-archive/2026/Minutes/July_21_2026_Regular_Meeting.pdf",
+      "size": 18343,
+      "sha256": "de3bade29f3a2e0862d1a7a9861a17dbbd56f97a4425c21c28c06b203b69304c"
+    },
+    {
+      "archive_path": "2026/Minutes/June_16_2026_Regular_Meeting.pdf",
+      "storage_path": "county-archive/2026/Minutes/June_16_2026_Regular_Meeting.pdf",
+      "size": 186016,
+      "sha256": "d00b1f1fdad47800450172bcec8ce00833b258f57d59cea84369b96a436a4d0b"
+    },
+    {
+      "archive_path": "2026/Minutes/June_18_2026_Recessed_Meeting.pdf",
+      "storage_path": "county-archive/2026/Minutes/June_18_2026_Recessed_Meeting.pdf",
+      "size": 84176,
+      "sha256": "d83e3ebeee98a8aaace25c8dc59119c7c6caabb8a319f4cd76fc04ddedc7f373"
+    },
+    {
+      "archive_path": "2026/Minutes/June_2_2026_Recessed_Meeting.pdf",
+      "storage_path": "county-archive/2026/Minutes/June_2_2026_Recessed_Meeting.pdf",
+      "size": 30255,
+      "sha256": "f0dff73f579520fc459fc2537c821571ad55cb75080491f95628404ba29179bc"
+    },
+    {
+      "archive_path": "2026/Minutes/June_29_2026_Recessed_Meeting.pdf",
+      "storage_path": "county-archive/2026/Minutes/June_29_2026_Recessed_Meeting.pdf",
+      "size": 60450,
+      "sha256": "9ecb9661eb3d7ed95ff42f519759d686c97df4d5dc21c43d103c7a963681bca4"
+    },
+    {
+      "archive_path": "2026/Minutes/March_17_2026_Regular_Meeting.pdf",
+      "storage_path": "county-archive/2026/Minutes/March_17_2026_Regular_Meeting.pdf",
+      "size": 92164,
+      "sha256": "1bfce344f026e8ec3c418f87bad694eea769034fc3507ca5b1e7c558d38011e0"
+    },
+    {
+      "archive_path": "2026/Minutes/May_19_2026_Regular_Meeting.pdf",
+      "storage_path": "county-archive/2026/Minutes/May_19_2026_Regular_Meeting.pdf",
+      "size": 67800,
+      "sha256": "1b8980ba1632687f23cdb72ec5319f213d10439c2c781e545ca95252577cb0fe"
+    },
+    {
+      "archive_path": "2026/Minutes/May_19_2026_SSYP_Public_Hearing.pdf",
+      "storage_path": "county-archive/2026/Minutes/May_19_2026_SSYP_Public_Hearing.pdf",
+      "size": 18894,
+      "sha256": "a84fb09da74c4d93e365a3b802f63b4154d1ede85ed6d49749def0efc967bb59"
+    },
+    {
+      "archive_path": "2026/Minutes/May_26_2026_Recessed_Meeting.pdf",
+      "storage_path": "county-archive/2026/Minutes/May_26_2026_Recessed_Meeting.pdf",
+      "size": 28461,
+      "sha256": "4b8826e757022fe9b43ebcffa7efc54a4d684f889c56d02eb60f1642093400bd"
+    },
+    {
+      "archive_path": "2026/Minutes/May_5_2026_Recessed_Meeting.pdf",
+      "storage_path": "county-archive/2026/Minutes/May_5_2026_Recessed_Meeting.pdf",
+      "size": 41798,
+      "sha256": "2948dfc10eab6e2c6c69ebda37aecf354cc07c597f72dc94d6905534c83983a1"
+    },
+    {
+      "archive_path": "2026/Minutes/Sept_15_2026_Recessed_Meeting.pdf",
+      "storage_path": "county-archive/2026/Minutes/Sept_15_2026_Recessed_Meeting.pdf",
+      "size": 8950,
+      "sha256": "8f645e6cdc4d3ca8e2b9e01fca10604d75846a35787467527c464011e0bca2b0"
+    },
+    {
+      "archive_path": "2026/Minutes/Sept_15_2026_Regular_Meeting.pdf",
+      "storage_path": "county-archive/2026/Minutes/Sept_15_2026_Regular_Meeting.pdf",
+      "size": 27817,
+      "sha256": "60cb38fdbdc965bb9b4bc2e51756985b4f3d2bd4fb381d10bf64fc67aa72abfe"
+    },
+    {
+      "archive_path": "Unsorted/Agendas/June_1802024_Regular_Meeting.pdf",
+      "storage_path": "county-archive/Unsorted/Agendas/June_1802024_Regular_Meeting.pdf",
+      "size": 24803,
+      "sha256": "82c21a61d56e060b05e5b144233514731df85600124c577e519390411f408ed2"
+    },
+    {
+      "archive_path": "Unsorted/General/Animal_Control.pdf",
+      "storage_path": "county-archive/Unsorted/General/Animal_Control.pdf",
+      "size": 468992,
+      "sha256": "3e6fac3b7e136590f4c86fb548d2861eb6426e9b70f67ddae66fc19d0949f16e"
+    },
+    {
+      "archive_path": "Unsorted/General/Building_SafetyInspection.pdf",
+      "storage_path": "county-archive/Unsorted/General/Building_SafetyInspection.pdf",
+      "size": 532695,
+      "sha256": "0ab349dcc6407c7690acb1f583bdc6dbe4b472220782523ea6d33257e3c4d703"
+    },
+    {
+      "archive_path": "Unsorted/General/Case_Information.pdf",
+      "storage_path": "county-archive/Unsorted/General/Case_Information.pdf",
+      "size": 59674,
+      "sha256": "e06fbb9e6bc4fbdcb865bbde96f6eb442a53cdfc8e73dd06f9a8488ad4aa689a"
+    },
+    {
+      "archive_path": "Unsorted/General/Central_Accounting.pdf",
+      "storage_path": "county-archive/Unsorted/General/Central_Accounting.pdf",
+      "size": 467798,
+      "sha256": "b2d3267efd75c484133a4cdc688409717f55c88c5fd66c3fa2acd34a0a2fe8d7"
+    },
+    {
+      "archive_path": "Unsorted/General/Central_Purchasing.pdf",
+      "storage_path": "county-archive/Unsorted/General/Central_Purchasing.pdf",
+      "size": 463271,
+      "sha256": "2acfd39c5bf8c9b09518f4f0b0c9320c4e0378de9d98dc0dcdfa807c688bdc0c"
+    },
+    {
+      "archive_path": "Unsorted/General/Circuit_Court_Clerk.pdf",
+      "storage_path": "county-archive/Unsorted/General/Circuit_Court_Clerk.pdf",
+      "size": 371954,
+      "sha256": "9172acdc3ea2ddec809d2c329132e4ab218a3044d33fbf1e783cf29ca60fd74e"
+    },
+    {
+      "archive_path": "Unsorted/General/Clerk_of_the_Circuit_Court.pdf",
+      "storage_path": "county-archive/Unsorted/General/Clerk_of_the_Circuit_Court.pdf",
+      "size": 371954,
+      "sha256": "9172acdc3ea2ddec809d2c329132e4ab218a3044d33fbf1e783cf29ca60fd74e"
+    },
+    {
+      "archive_path": "Unsorted/General/Commissioner_of_the_Revenue.pdf",
+      "storage_path": "county-archive/Unsorted/General/Commissioner_of_the_Revenue.pdf",
+      "size": 392006,
+      "sha256": "c2fb97cf12e1cf203c23f029d53a9fcb482f740b97233823ebba800968da2114"
+    },
+    {
+      "archive_path": "Unsorted/General/Commonwealths_Attorney.pdf",
+      "storage_path": "county-archive/Unsorted/General/Commonwealths_Attorney.pdf",
+      "size": 370903,
+      "sha256": "b85de38760e855537a7c51ca89cf561f1b92f126bf4a527c8e49287b2c59cefa"
+    },
+    {
+      "archive_path": "Unsorted/General/County_Administration.pdf",
+      "storage_path": "county-archive/Unsorted/General/County_Administration.pdf",
+      "size": 462155,
+      "sha256": "ae5151ba5e70ec33222b40c20128c8709f4559f6a978d36f035057eea4965781"
+    },
+    {
+      "archive_path": "Unsorted/General/E-911.pdf",
+      "storage_path": "county-archive/Unsorted/General/E-911.pdf",
+      "size": 107158,
+      "sha256": "56b4e4e8a034d91ba001fa61d0b33181eea28235bb5b8a672a7376380637abea"
+    },
+    {
+      "archive_path": "Unsorted/General/Economic_Development_Authority.pdf",
+      "storage_path": "county-archive/Unsorted/General/Economic_Development_Authority.pdf",
+      "size": 45818,
+      "sha256": "4eb0ea6e91593fdc7c1ac47a9f9ec724386e5d63ad71a031295fa5a915645d6a"
+    },
+    {
+      "archive_path": "Unsorted/General/Electoral_BoardRegistrar.pdf",
+      "storage_path": "county-archive/Unsorted/General/Electoral_BoardRegistrar.pdf",
+      "size": 481142,
+      "sha256": "e729bc1fc55be246463ce53c156b52f251ea274746ca386f8a2274724ec03c4f"
+    },
+    {
+      "archive_path": "Unsorted/General/General_District_Court.pdf",
+      "storage_path": "county-archive/Unsorted/General/General_District_Court.pdf",
+      "size": 67250,
+      "sha256": "55f4f2fd8cfbb1a2edeef8af19198c364e59e65a10efdc29a5ade79c661ae48c"
+    },
+    {
+      "archive_path": "Unsorted/General/Juvenile__Domestic_Court_Services.pdf",
+      "storage_path": "county-archive/Unsorted/General/Juvenile__Domestic_Court_Services.pdf",
+      "size": 478436,
+      "sha256": "f08282d75f7507efdccae1588986d3949567aafe766cb4e4fb880c38ffc23dd4"
+    },
+    {
+      "archive_path": "Unsorted/General/Lee_County_BOS.pdf",
+      "storage_path": "county-archive/Unsorted/General/Lee_County_BOS.pdf",
+      "size": 484237,
+      "sha256": "ca943816a7266914c9e1f2e9b03158a21930a196fde0af61163cf73659b6d08d"
+    },
+    {
+      "archive_path": "Unsorted/General/Litter_ControlRecycling.pdf",
+      "storage_path": "county-archive/Unsorted/General/Litter_ControlRecycling.pdf",
+      "size": 476113,
+      "sha256": "e025432b68bbfcce6c4b4efa8e8f2646b770b5eb3f04cfc44b62b8361f8dac8c"
+    },
+    {
+      "archive_path": "Unsorted/General/Public_Works.pdf",
+      "storage_path": "county-archive/Unsorted/General/Public_Works.pdf",
+      "size": 485124,
+      "sha256": "5be59c0ea7724e11d9f6ccb840e01b71b02b026ded45f2b6eafd426578ff3346"
+    },
+    {
+      "archive_path": "Unsorted/General/Sheriffs_Office.pdf",
+      "storage_path": "county-archive/Unsorted/General/Sheriffs_Office.pdf",
+      "size": 412125,
+      "sha256": "ebf5f8f9db8f03bb4a34d19c3ceb93266d9f0c308824c4d09fe4efa4bc23f8aa"
+    },
+    {
+      "archive_path": "Unsorted/General/Tourism.pdf",
+      "storage_path": "county-archive/Unsorted/General/Tourism.pdf",
+      "size": 443844,
+      "sha256": "8b3275725fa9cb2a15c686f661bd22d5e246bbe9fe973c4bf5120c493237431d"
+    },
+    {
+      "archive_path": "Unsorted/General/Treasurer.pdf",
+      "storage_path": "county-archive/Unsorted/General/Treasurer.pdf",
+      "size": 370433,
+      "sha256": "4e62ee90b1de528f5a375157bb3edd1b40c88b1df24b657b1a6b2c70ddebe2e3"
+    },
+    {
+      "archive_path": "Unsorted/General/VictimWitness_Program.pdf",
+      "storage_path": "county-archive/Unsorted/General/VictimWitness_Program.pdf",
+      "size": 506196,
+      "sha256": "b5c6483239cb9871b35cd46538f13e0faf1e4ec89fb13cb300cdbb5966696920"
+    },
+    {
+      "archive_path": "Unsorted/General/Works_Program.pdf",
+      "storage_path": "county-archive/Unsorted/General/Works_Program.pdf",
+      "size": 461450,
+      "sha256": "43b2bf705f0bb7227706710255a5cc8ee5bde467430ffdbca67b7ca47f9cd911"
+    },
+    {
+      "archive_path": "Unsorted/General/Zoning_Department.pdf",
+      "storage_path": "county-archive/Unsorted/General/Zoning_Department.pdf",
+      "size": 504476,
+      "sha256": "0e314e00b75cac6b1a2e99eaa8815ce8313118235a39759aa5806608ded4536f"
+    },
+    {
+      "archive_path": "Unsorted/Minutes/.pdf",
+      "storage_path": "county-archive/Unsorted/Minutes/.pdf",
+      "size": 204076,
+      "sha256": "172f0d15a919474f33e6fb4199456ab0fa1d7984cd3929c38c7c1f369b82340a"
+    }
+  ]
+}

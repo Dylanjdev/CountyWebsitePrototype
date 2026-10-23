@@ -1,0 +1,32 @@
+@import url('https://fonts.googleapis.com/css2?family=DM+Sans:wght@400;500;600;700&family=Libre+Franklin:wght@400;500;600&family=Newsreader:opsz,wght@6..72,500;6..72,600&display=swap');
+
+:root {
+  font-family: 'DM Sans', 'Segoe UI', sans-serif;
+  color: #24312d;
+  background: #ffffff;
+  font-synthesis: none;
+  text-rendering: optimizeLegibility;
+  -webkit-font-smoothing: antialiased;
+  --forest-950: #082a23;
+  --forest-900: #0d3b31;
+  --forest-800: #174e40;
+  --forest-700: #20604f;
+  --forest-100: #e4eee9;
+  --cream: #f6f3ec;
+  --cream-deep: #eee8dc;
+  --gold: #c49a54;
+  --gold-light: #e4c88e;
+  --ink: #18241f;
+  --muted: #62706a;
+  --line: #dce3df;
+}
+
+* { box-sizing: border-box; }
+html { scroll-behavior: smooth; }
+body { margin: 0; min-width: 320px; min-height: 100vh; }
+button, input { font: inherit; }
+a { color: inherit; }
+button, a { -webkit-tap-highlight-color: transparent; }
+::selection { color: white; background: var(--forest-700); }
+:focus-visible { outline: 3px solid #e1ad4f; outline-offset: 3px; }
+#root { min-height: 100vh; }

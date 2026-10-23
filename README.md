@@ -1,17 +1,16 @@
-# React + Vite
+# Lee County Website Prototype
 
-This template provides a minimal setup to get React working in Vite with HMR and some ESLint rules.
+React and Vite website for Lee County, Virginia.
 
-Currently, two official plugins are available:
+## GitHub Pages
 
-- [@vitejs/plugin-react](https://github.com/vitejs/vite-plugin-react/blob/main/packages/plugin-react) uses [Oxc](https://oxc.rs)
-- [@vitejs/plugin-react-swc](https://github.com/vitejs/vite-plugin-react/blob/main/packages/plugin-react-swc) uses [SWC](https://swc.rs/)
+The workflow at `.github/workflows/deploy-pages.yml` deploys `main` to:
 
-## React Compiler
+`https://dylanjdev.github.io/CountyWebsitePrototype/`
 
-The React Compiler is not enabled on this template because of its impact on dev & build performances. To add it, see [this documentation](https://react.dev/learn/react-compiler/installation).
+The workflow reads these encrypted repository secrets:
 
-## Expanding the ESLint configuration
+- `VITE_SUPABASE_URL`
+- `VITE_SUPABASE_PUBLISHABLE_KEY`
 
-If you are developing a production application, we recommend using TypeScript with type-aware lint rules enabled. Check out the [TS template](https://github.com/vitejs/vite/tree/main/packages/create-vite/template-react-ts) for information on how to integrate TypeScript and [`typescript-eslint`](https://typescript-eslint.io) in your project.
-# CountyWebsitePrototype
+GitHub Pages uses **GitHub Actions** as its publishing source. A push to `main` will install dependencies, build the Vite site with the `/CountyWebsitePrototype/` base path, and deploy it. The workflow also creates a `404.html` fallback so direct links such as `/CountyWebsitePrototype/admin` continue to load the React application.

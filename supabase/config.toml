@@ -1,0 +1,4 @@
+project_id = "LeeCounty"
+
+[functions.adobe-autotag]
+verify_jwt = true
