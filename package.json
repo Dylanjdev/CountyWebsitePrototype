@@ -10,7 +10,8 @@
     "generate:meetings": "node scripts/generate-meeting-archive.mjs",
     "import:meetings": "node scripts/import-legacy-meetings.mjs",
     "migrate:documents": "node scripts/migrate-local-pdfs-to-supabase.mjs",
-    "preview": "vite preview"
+    "preview": "vite preview",
+    "deploy": "git push origin main && gh workflow run deploy-pages.yml --ref main"
   },
   "dependencies": {
     "@supabase/supabase-js": "^2.117.0",
