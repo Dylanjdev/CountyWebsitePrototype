@@ -69,6 +69,18 @@ The local `.env.local` is ignored by Git. Production hosting must receive the sa
 
 Approved administrators can sign in at `/admin` with their Lee County email and password. Access is checked against `calendar_admins` in Supabase; a browser session alone does not grant document or public-notice access.
 
+When an invited user opens a Supabase invitation, the website recognizes the `invite` callback, routes it to `/admin`, and opens a **Create your account** dialog. The user chooses a password there and then continues directly into the administration page.
+
+In **Authentication → URL Configuration** in the Supabase Dashboard, set the production Site URL to the website root and allow the admin URL as a redirect URL. For the current GitHub Pages deployment, allow:
+
+```text
+https://dylanjdev.github.io/CountyWebsitePrototype/admin
+```
+
+If invitations are sent with the Auth Admin API instead of the Supabase Dashboard, pass that same full URL as the `redirectTo` option. The Auth Admin API and its secret key must only run in a trusted server environment. Dashboard invitations use the configured Site URL; invite callbacks that arrive at the website root are moved to `/admin` automatically.
+
+An Auth invitation and administrator authorization are separate. Before the new user signs in, add the invited user's ID to `calendar_admins` through the existing administrator procedure. Do not weaken the table's Row Level Security policies or treat every authenticated account as an administrator.
+
 From the **Public notices** tab, staff can create a draft, preview it, publish it, edit its content, replace its PDF, or archive it. The **Meetings** tab manages Board of Supervisors agendas and minutes. The **Document library** tab manages bids, budgets, forms, reports, and other standalone files.
 
 Create and revoke administrators through the Lee County Supabase project's existing administrator procedure. Public sign-up should remain disabled.

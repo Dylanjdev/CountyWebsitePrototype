@@ -2,11 +2,12 @@ import { useEffect, useState } from 'react'
 import countyLogo from './assets/lee-logo.avif'
 import heroImage from './assets/lee-county-hero.webp'
 import { historicalMeetingDocuments } from './data/historicalMeetings'
-import { DOCUMENT_BUCKET, isSupabaseConfigured, supabase } from './lib/supabase'
+import { DOCUMENT_BUCKET, initialAuthRedirect, isSupabaseConfigured, supabase } from './lib/supabase'
 import './App.css'
 
 const PUBLIC_RECORD_RETENTION_YEARS = 3
 const SITE_BASE_PATH = import.meta.env.BASE_URL.replace(/\/+$/, '')
+const INVITE_SETUP_STORAGE_KEY = 'lee-county-admin-invite-setup'
 
 function sitePath(value) {
   if (!value?.startsWith('/') || value.startsWith('//')) return value
@@ -18,6 +19,24 @@ function routePath(pathname) {
     ? pathname.slice(SITE_BASE_PATH.length)
     : pathname
   return relativePath.replace(/\/+$/, '') || '/'
+}
+
+function invitationNeedsAccountSetup() {
+  if (typeof window === 'undefined') return false
+  try {
+    if (initialAuthRedirect.type === 'invite') window.localStorage.setItem(INVITE_SETUP_STORAGE_KEY, 'pending')
+    return window.localStorage.getItem(INVITE_SETUP_STORAGE_KEY) === 'pending'
+  } catch {
+    return initialAuthRedirect.type === 'invite'
+  }
+}
+
+function clearInvitationAccountSetup() {
+  try {
+    window.localStorage.removeItem(INVITE_SETUP_STORAGE_KEY)
+  } catch {
+    // The dialog can still close when browser storage is unavailable.
+  }
 }
 
 const quickLinks = [
@@ -1551,7 +1570,14 @@ function AdminPage() {
   const [adminEvents, setAdminEvents] = useState([])
   const [email, setEmail] = useState('')
   const [password, setPassword] = useState('')
-  const [authError, setAuthError] = useState('')
+  const [authError, setAuthError] = useState(() => initialAuthRedirect.errorDescription
+    ? `The invitation link could not be opened: ${initialAuthRedirect.errorDescription}`
+    : '')
+  const [showAccountSetup, setShowAccountSetup] = useState(invitationNeedsAccountSetup)
+  const [accountPassword, setAccountPassword] = useState('')
+  const [accountPasswordConfirmation, setAccountPasswordConfirmation] = useState('')
+  const [accountSetupError, setAccountSetupError] = useState('')
+  const [accountSetupBusy, setAccountSetupBusy] = useState(false)
   const [message, setMessage] = useState('')
   const [reportDownloads, setReportDownloads] = useState([])
   const [accessibilityReport, setAccessibilityReport] = useState(null)
@@ -1598,6 +1624,13 @@ function AdminPage() {
       window.removeEventListener('keydown', closeOnEscape)
     }
   }, [previewNotice])
+
+  useEffect(() => {
+    if (!showAccountSetup) return undefined
+    const previousOverflow = document.body.style.overflow
+    document.body.style.overflow = 'hidden'
+    return () => { document.body.style.overflow = previousOverflow }
+  }, [showAccountSetup])
 
   useEffect(() => {
     let active = true
@@ -1673,6 +1706,45 @@ function AdminPage() {
     const { error } = await supabase.auth.signInWithPassword({ email: email.trim(), password })
     if (error) setAuthError('The email or password was not accepted.')
     setBusy(false)
+  }
+
+  async function handleAccountSetup(event) {
+    event.preventDefault()
+    setAccountSetupError('')
+
+    if (!session?.user) {
+      setAccountSetupError('This invitation could not be verified. Ask a current administrator to send a new invitation.')
+      return
+    }
+    if (accountPassword.length < 8) {
+      setAccountSetupError('Use at least 8 characters for your password.')
+      return
+    }
+    if (accountPassword !== accountPasswordConfirmation) {
+      setAccountSetupError('The passwords do not match.')
+      return
+    }
+
+    setAccountSetupBusy(true)
+    const { error } = await supabase.auth.updateUser({ password: accountPassword })
+    if (error) {
+      setAccountSetupError(error.message || 'Your password could not be saved. Please try again.')
+      setAccountSetupBusy(false)
+      return
+    }
+
+    setAccountPassword('')
+    setAccountPasswordConfirmation('')
+    setMessage('Your administrator account is ready.')
+    clearInvitationAccountSetup()
+    setShowAccountSetup(false)
+    setAccountSetupBusy(false)
+  }
+
+  async function cancelAccountSetup() {
+    clearInvitationAccountSetup()
+    setShowAccountSetup(false)
+    if (session) await supabase.auth.signOut()
   }
 
   async function handleUpload(event) {
@@ -2270,6 +2342,8 @@ function AdminPage() {
         </div>
       </section>
 
+      {showAccountSetup && <div className="account-setup-overlay" role="presentation"><section className="account-setup-dialog" role="dialog" aria-modal="true" aria-labelledby="account-setup-title" aria-describedby="account-setup-description"><span className="account-setup-icon" aria-hidden="true"><Icon name="shield" size={28} /></span><p className="eyebrow">Administrator Invitation</p><h2 id="account-setup-title">Create your account</h2>{!isSupabaseConfigured ? <><p id="account-setup-description">The website cannot verify this invitation until its Supabase connection is configured.</p><button type="button" onClick={cancelAccountSetup}>Return to sign in</button></> : session === undefined ? <p id="account-setup-description">Verifying your invitation…</p> : !session ? <><p id="account-setup-description">This invitation is invalid or has expired. Ask a current administrator to send a new invitation.</p><button type="button" onClick={cancelAccountSetup}>Return to sign in</button></> : <><p id="account-setup-description">Choose a password for <strong>{session.user.email}</strong>. When you’re finished, you’ll continue to the administration page.</p><form onSubmit={handleAccountSetup}><label>New password<input type="password" value={accountPassword} onChange={(event) => setAccountPassword(event.target.value)} minLength="8" autoComplete="new-password" autoFocus required /><span>Use at least 8 characters.</span></label><label>Confirm password<input type="password" value={accountPasswordConfirmation} onChange={(event) => setAccountPasswordConfirmation(event.target.value)} minLength="8" autoComplete="new-password" required /></label>{accountSetupError && <p className="admin-message error" role="alert">{accountSetupError}</p>}<button type="submit" disabled={accountSetupBusy}>{accountSetupBusy ? 'Creating account…' : 'Create account'}</button><button type="button" className="account-setup-secondary" disabled={accountSetupBusy} onClick={cancelAccountSetup}>Cancel and sign out</button></form></>}</section></div>}
+
       {preview && <div className="notice-preview-overlay" role="presentation" onMouseDown={(event) => { if (event.target === event.currentTarget) setPreviewNotice(null) }}><section className="notice-preview-dialog" role="dialog" aria-modal="true" aria-labelledby="notice-preview-title"><div className="notice-preview-header"><div><p className="eyebrow">Staff preview</p><h2 id="notice-preview-title">Public notice preview</h2></div><button type="button" onClick={() => setPreviewNotice(null)} aria-label="Close preview">×</button></div><article className={`notice-card${preview.is_featured ? ' notice-card-featured' : ''}`}><div className="notice-card-topline"><span className="notice-card-icon"><Icon name={noticeIcon(preview)} size={25} /></span><span className="notice-type">{preview.notice_type}</span>{preview.posted_at && <time>{formatDocumentDate(preview.posted_at)}</time>}</div><h3>{preview.title || 'Untitled notice'}</h3><p className="notice-summary">{preview.summary || 'The notice summary will appear here.'}</p>{preview.body && <p>{preview.body}</p>}{(preview.deadline_at || preview.contact_name || preview.submission_address) && <dl className="notice-facts">{preview.deadline_at && <div><dt>Deadline</dt><dd>{formatNoticeDeadline(preview.deadline_at)}</dd></div>}{(preview.contact_name || preview.contact_phone) && <div><dt>Contact</dt><dd>{preview.contact_name}<br />{preview.contact_phone}</dd></div>}{preview.submission_address && <div><dt>Submit to</dt><dd>{preview.submission_address}</dd></div>}</dl>}{(preview.action_url || preview.attachment_path || noticeFile) && <span className="notice-action">{preview.action_label || (preview.attachment_path || noticeFile ? 'Download attachment' : 'Learn more')}<Icon name="external" size={18} /></span>}</article></section></div>}
     </main>
   )
@@ -2395,8 +2469,14 @@ function App() {
   const [menuOpen, setMenuOpen] = useState(false)
   const [query, setQuery] = useState('')
   const [searchMessage, setSearchMessage] = useState('')
-  const currentPath = routePath(window.location.pathname)
+  const requestedPath = routePath(window.location.pathname)
+  const currentPath = initialAuthRedirect.type === 'invite' ? '/admin' : requestedPath
   const currentPage = interiorPages[currentPath]
+
+  useEffect(() => {
+    if (initialAuthRedirect.type !== 'invite' || requestedPath === '/admin') return
+    window.history.replaceState(window.history.state, '', `${sitePath('/admin')}${window.location.search}${window.location.hash}`)
+  }, [requestedPath])
 
   useEffect(() => {
     document.title = currentPath === '/'

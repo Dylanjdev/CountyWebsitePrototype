@@ -563,6 +563,23 @@
 .document-upload-form > button { width: 100%; margin-top: 24px; padding: 13px 18px; color: white; background: var(--forest-800); border: 0; font-size: .78rem; font-weight: 700; cursor: pointer; }
 .admin-auth-card button:disabled,
 .document-upload-form > button:disabled { opacity: .65; cursor: wait; }
+.account-setup-overlay { position: fixed; z-index: 1100; inset: 0; padding: 24px; display: grid; place-items: center; overflow-y: auto; background: rgba(4,28,23,.8); backdrop-filter: blur(3px); }
+.account-setup-dialog { width: min(500px,100%); max-height: calc(100vh - 48px); padding: 40px; overflow-y: auto; color: var(--ink); background: white; border-top: 5px solid var(--gold); box-shadow: 0 30px 80px rgba(0,0,0,.32); }
+.account-setup-icon { width: 54px; height: 54px; margin-bottom: 24px; display: grid; place-items: center; color: var(--forest-800); background: var(--forest-100); border-radius: 50%; }
+.account-setup-dialog h2 { margin: 0; color: var(--forest-950); font-family: 'Newsreader', Georgia, serif; font-size: 2.35rem; font-weight: 500; }
+.account-setup-dialog > p:not(.eyebrow) { margin: 14px 0 0; color: var(--muted); line-height: 1.65; }
+.account-setup-dialog > p strong { color: var(--ink); overflow-wrap: anywhere; }
+.account-setup-dialog form { margin-top: 25px; }
+.account-setup-dialog label { margin-top: 17px; display: flex; flex-direction: column; gap: 8px; color: var(--ink); font-size: .73rem; font-weight: 700; }
+.account-setup-dialog label:first-child { margin-top: 0; }
+.account-setup-dialog input { width: 100%; padding: 12px 13px; color: var(--ink); background: white; border: 1px solid #cbd4d0; border-radius: 0; outline: 0; font: inherit; font-weight: 400; }
+.account-setup-dialog input:focus { border-color: var(--forest-700); box-shadow: 0 0 0 2px rgba(32,96,79,.12); }
+.account-setup-dialog label span { color: var(--muted); font-size: .64rem; font-weight: 400; }
+.account-setup-dialog form > button,
+.account-setup-dialog > button { width: 100%; margin-top: 24px; padding: 13px 18px; color: white; background: var(--forest-800); border: 1px solid var(--forest-800); font-size: .78rem; font-weight: 700; cursor: pointer; }
+.account-setup-dialog form > button:disabled { opacity: .65; cursor: wait; }
+.account-setup-dialog form > .account-setup-secondary { margin-top: 9px; color: var(--forest-800); background: white; border-color: #b8c6c0; }
+.account-setup-dialog .admin-message { margin: 20px 0 0; }
 .admin-message { margin: 0 0 22px; padding: 12px 15px; color: var(--forest-900); background: var(--forest-100); border-left: 3px solid var(--forest-700); font-size: .76rem; }
 .admin-message p { margin: 0; }
 .admin-report-links { margin-top: 8px; display: flex; flex-wrap: wrap; gap: 8px 16px; }
@@ -868,6 +885,8 @@
   .calendar-event { padding: 22px 18px; grid-template-columns: 58px 1fr; }
   .event-date { width: 58px; }
   .admin-auth-card { padding: 28px 23px; }
+  .account-setup-overlay { padding: 15px; }
+  .account-setup-dialog { max-height: calc(100vh - 30px); padding: 30px 23px; }
   .document-upload-form { padding: 25px 20px; }
   .admin-document-list article { grid-template-columns: 1fr; }
   .admin-document-actions { flex-direction: row; }
