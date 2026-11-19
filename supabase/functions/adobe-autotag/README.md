@@ -46,9 +46,23 @@ const { data: result, error } = await supabase.functions.invoke('adobe-autotag',
 ```
 
 When the status is `done`, the tagged PDF has replaced the source by default.
-Pass a different `outputPath` in the start request to retain the original.
-The XLSX report remains private and the final response includes a one-hour
-signed URL for it.
+Before an in-place replacement, the function saves a private copy beside the
+source using the `-pre-auto-repair.pdf` suffix. The final response includes
+one-hour signed URLs for the original backup and repaired PDF so an
+administrator can compare them. Pass a different `outputPath` in the start
+request to retain the source in place. The XLSX report also remains private and
+the final response includes a one-hour signed URL for it.
+
+The admin interface also sends the county record title and `en-US` language.
+After Adobe returns the tagged PDF, the function sets that title as the PDF
+title and configures readers to show it in the title bar, sets the primary
+document language, and sets every page's tab order to follow the document
+structure. The `automaticRepairs` response lists each applied repair for the
+review panel.
+
+The administrator can send `restore-backup` with the returned `originalPath`
+as `backupPath` and `outputPath` to put the original file back. This action also
+updates the matching document record's file size.
 
 The administrator interface then invokes `checker-start` and polls
 `checker-status`. This runs Adobe PDF Accessibility Checker against the tagged

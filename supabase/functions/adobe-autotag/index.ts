@@ -1,4 +1,5 @@
 import { createClient, type SupabaseClient } from 'supabase'
+import { PDFDocument, PDFName } from 'pdf-lib'
 
 const ADOBE_API_ORIGIN = 'https://pdf-services.adobe.io'
 const DOCUMENT_BUCKET = 'county-documents'
@@ -14,6 +15,8 @@ type StartRequest = {
   action: 'start'
   sourcePath: string
   outputPath?: string
+  documentTitle?: string
+  language?: string
   reportPath?: string
   generateReport?: boolean
   shiftHeadings?: boolean
@@ -23,6 +26,9 @@ type StatusRequest = {
   action: 'status'
   pollingUrl: string
   outputPath: string
+  originalPath?: string
+  documentTitle?: string
+  language?: string
   reportPath?: string
   generateReport?: boolean
 }
@@ -40,7 +46,13 @@ type CheckerStatusRequest = {
   reportPath: string
 }
 
-type FunctionRequest = StartRequest | StatusRequest | CheckerStartRequest | CheckerStatusRequest
+type RestoreBackupRequest = {
+  action: 'restore-backup'
+  backupPath: string
+  outputPath: string
+}
+
+type FunctionRequest = StartRequest | StatusRequest | CheckerStartRequest | CheckerStatusRequest | RestoreBackupRequest
 
 type AdobeAsset = {
   assetID?: string
@@ -137,6 +149,24 @@ function defaultCheckerReportPath(sourcePath: string) {
   return sourcePath.replace(/\.pdf$/i, '-accessibility-check.json')
 }
 
+function defaultBackupPath(sourcePath: string) {
+  return sourcePath.replace(/\.pdf$/i, '-pre-auto-repair.pdf')
+}
+
+function normalizeDocumentTitle(value: unknown) {
+  if (typeof value !== 'string') return undefined
+  const title = value.trim().replace(/\s+/g, ' ')
+  if (!title) return undefined
+  if (title.length > 500) throw new HttpError(400, 'The PDF document title must be 500 characters or fewer.')
+  return title
+}
+
+function normalizeDocumentLanguage(value: unknown) {
+  const language = typeof value === 'string' && value.trim() ? value.trim() : 'en-US'
+  if (!/^[A-Za-z]{2,8}(?:-[A-Za-z0-9]{1,8})*$/.test(language)) throw new HttpError(400, 'The PDF document language is invalid.')
+  return language
+}
+
 function validatePollingUrl(value: unknown, operation: 'autotag' | 'accessibilitychecker') {
   if (typeof value !== 'string') throw new HttpError(400, 'An Adobe polling URL is required.')
 
@@ -216,6 +246,8 @@ async function uploadPDFToAdobe(sourcePDF: Blob, accessToken: string) {
 async function startJob(body: StartRequest, supabase: SupabaseClient) {
   const sourcePath = normalizeStoragePath(body.sourcePath, '.pdf')
   const outputPath = normalizeStoragePath(body.outputPath || sourcePath, '.pdf')
+  const documentTitle = normalizeDocumentTitle(body.documentTitle)
+  const language = normalizeDocumentLanguage(body.language)
   const generateReport = body.generateReport !== false
   const reportPath = generateReport
     ? normalizeStoragePath(body.reportPath || defaultReportPath(outputPath), '.xlsx')
@@ -227,6 +259,16 @@ async function startJob(body: StartRequest, supabase: SupabaseClient) {
   if (downloadError || !sourcePDF) throw new HttpError(404, 'The source PDF could not be read from Supabase Storage.', downloadError?.message)
   if (!sourcePDF.size) throw new HttpError(400, 'The source PDF is empty.')
   if (sourcePDF.size > 100 * 1024 * 1024) throw new HttpError(413, 'Adobe Auto-Tag supports PDFs up to 100 MB.')
+
+  const originalPath = outputPath === sourcePath
+    ? normalizeStoragePath(defaultBackupPath(sourcePath), '.pdf')
+    : sourcePath
+  if (originalPath !== sourcePath) {
+    const { error: backupError } = await supabase.storage
+      .from(DOCUMENT_BUCKET)
+      .upload(originalPath, sourcePDF, { contentType: 'application/pdf', upsert: true })
+    if (backupError) throw new HttpError(502, 'A private backup could not be saved before auto-repair.', backupError.message)
+  }
 
   const accessToken = await getAdobeAccessToken()
   const headers = adobeHeaders(accessToken)
@@ -250,6 +292,9 @@ async function startJob(body: StartRequest, supabase: SupabaseClient) {
     pollingUrl: validatePollingUrl(new URL(pollingLocation, ADOBE_API_ORIGIN).href, 'autotag'),
     sourcePath,
     outputPath,
+    originalPath,
+    documentTitle,
+    language,
     reportPath,
     generateReport,
   }
@@ -271,9 +316,48 @@ async function updateDocumentMetadata(supabase: SupabaseClient, userId: string, 
   return updates.flatMap((result) => result.error ? [result.error.message] : [])
 }
 
+async function applySafeAccessibilityRepairs(sourcePDF: Blob, documentTitle: string | undefined, language: string) {
+  let pdfDocument: PDFDocument
+  try {
+    pdfDocument = await PDFDocument.load(await sourcePDF.arrayBuffer(), { updateMetadata: false })
+  } catch (error) {
+    throw new HttpError(422, 'The tagged PDF could not be opened for automatic metadata repair.', error instanceof Error ? error.message : error)
+  }
+
+  const repairs: string[] = []
+  if (documentTitle) {
+    pdfDocument.setTitle(documentTitle, { showInWindowTitleBar: true })
+    repairs.push(`Set the document title to “${documentTitle}” and configured PDF readers to show it in the title bar.`)
+  }
+
+  pdfDocument.setLanguage(language)
+  repairs.push(`Set the document’s primary language to ${language}.`)
+
+  const pages = pdfDocument.getPages()
+  for (const page of pages) page.node.set(PDFName.of('Tabs'), PDFName.of('S'))
+  repairs.push(`Set tab order to follow the document structure on ${pages.length} page${pages.length === 1 ? '' : 's'}.`)
+
+  let repairedBytes: Uint8Array
+  try {
+    repairedBytes = await pdfDocument.save()
+  } catch (error) {
+    throw new HttpError(422, 'The automatic metadata repairs could not be saved.', error instanceof Error ? error.message : error)
+  }
+
+  const repairedBuffer = new ArrayBuffer(repairedBytes.byteLength)
+  new Uint8Array(repairedBuffer).set(repairedBytes)
+  return {
+    pdf: new Blob([repairedBuffer], { type: 'application/pdf' }),
+    repairs,
+  }
+}
+
 async function checkJob(body: StatusRequest, supabase: SupabaseClient, userId: string) {
   const pollingUrl = validatePollingUrl(body.pollingUrl, 'autotag')
   const outputPath = normalizeStoragePath(body.outputPath, '.pdf')
+  const originalPath = normalizeStoragePath(body.originalPath || outputPath, '.pdf')
+  const documentTitle = normalizeDocumentTitle(body.documentTitle)
+  const language = normalizeDocumentLanguage(body.language)
   const generateReport = body.generateReport !== false
   const reportPath = generateReport
     ? normalizeStoragePath(body.reportPath || defaultReportPath(outputPath), '.xlsx')
@@ -297,14 +381,15 @@ async function checkJob(body: StatusRequest, supabase: SupabaseClient, userId: s
   }
 
   const taggedPDF = await downloadAdobeAsset(job['tagged-pdf'], 'tagged PDF')
-  if (!taggedPDF.size || taggedPDF.size > MAX_STORAGE_FILE_SIZE) {
-    throw new HttpError(413, 'The tagged PDF exceeds the 25 MB Supabase Storage limit.')
+  const repaired = await applySafeAccessibilityRepairs(taggedPDF, documentTitle, language)
+  if (!repaired.pdf.size || repaired.pdf.size > MAX_STORAGE_FILE_SIZE) {
+    throw new HttpError(413, 'The repaired PDF exceeds the 25 MB Supabase Storage limit.')
   }
 
   const { error: outputError } = await supabase.storage
     .from(DOCUMENT_BUCKET)
-    .upload(outputPath, taggedPDF, { contentType: 'application/pdf', upsert: true })
-  if (outputError) throw new HttpError(502, 'The tagged PDF could not be saved to Supabase Storage.', outputError.message)
+    .upload(outputPath, repaired.pdf, { contentType: 'application/pdf', upsert: true })
+  if (outputError) throw new HttpError(502, 'The repaired PDF could not be saved to Supabase Storage.', outputError.message)
 
   let reportSize: number | undefined
   let reportSignedUrl: string | undefined
@@ -322,16 +407,48 @@ async function checkJob(body: StatusRequest, supabase: SupabaseClient, userId: s
     reportSignedUrl = signedReport?.signedUrl
   }
 
-  const metadataWarnings = await updateDocumentMetadata(supabase, userId, outputPath, taggedPDF.size)
+  const metadataWarnings = await updateDocumentMetadata(supabase, userId, outputPath, repaired.pdf.size)
+  const [originalSignedUrlResult, repairedSignedUrlResult] = await Promise.all([
+    supabase.storage.from(DOCUMENT_BUCKET).createSignedUrl(originalPath, 3600),
+    supabase.storage.from(DOCUMENT_BUCKET).createSignedUrl(outputPath, 3600),
+  ])
   return {
     status: 'done',
     outputPath,
-    outputSize: taggedPDF.size,
+    outputSize: repaired.pdf.size,
+    originalPath,
+    originalSignedUrl: originalSignedUrlResult.data?.signedUrl,
+    repairedSignedUrl: repairedSignedUrlResult.data?.signedUrl,
+    automaticRepairs: [
+      'Adobe rebuilt the accessibility tag structure and analyzed the document’s reading order.',
+      'Adobe processed scanned pages with English OCR when scanned content was detected.',
+      ...repaired.repairs,
+    ],
     reportPath,
     reportSize,
     reportSignedUrl,
     metadataWarnings,
   }
+}
+
+async function restoreBackup(body: RestoreBackupRequest, supabase: SupabaseClient, userId: string) {
+  const backupPath = normalizeStoragePath(body.backupPath, '.pdf')
+  const outputPath = normalizeStoragePath(body.outputPath, '.pdf')
+  if (backupPath === outputPath) throw new HttpError(400, 'The backup and destination paths must be different.')
+
+  const { data: backupPDF, error: downloadError } = await supabase.storage
+    .from(DOCUMENT_BUCKET)
+    .download(backupPath)
+  if (downloadError || !backupPDF) throw new HttpError(404, 'The original PDF backup could not be read.', downloadError?.message)
+  if (!backupPDF.size || backupPDF.size > MAX_STORAGE_FILE_SIZE) throw new HttpError(413, 'The original PDF backup is invalid or too large.')
+
+  const { error: restoreError } = await supabase.storage
+    .from(DOCUMENT_BUCKET)
+    .upload(outputPath, backupPDF, { contentType: 'application/pdf', upsert: true })
+  if (restoreError) throw new HttpError(502, 'The original PDF could not be restored.', restoreError.message)
+
+  const metadataWarnings = await updateDocumentMetadata(supabase, userId, outputPath, backupPDF.size)
+  return { status: 'done', outputPath, outputSize: backupPDF.size, metadataWarnings }
 }
 
 async function startCheckerJob(body: CheckerStartRequest, supabase: SupabaseClient) {
@@ -467,6 +584,7 @@ async function handler(request: Request) {
     if (body.action === 'status') return jsonResponse(await checkJob(body, supabase, userId))
     if (body.action === 'checker-start') return jsonResponse(await startCheckerJob(body, supabase))
     if (body.action === 'checker-status') return jsonResponse(await checkCheckerJob(body, supabase))
+    if (body.action === 'restore-backup') return jsonResponse(await restoreBackup(body, supabase, userId))
     throw new HttpError(400, 'Unsupported Adobe accessibility action.')
   } catch (error) {
     const status = error instanceof HttpError ? error.status : 500

@@ -89,9 +89,15 @@ Create and revoke administrators through the Lee County Supabase project's exist
 
 The `adobe-autotag` Edge Function sends an administrator-accessible PDF from
 the private document bucket to Adobe PDF Accessibility Auto-Tag and saves the
-tagged PDF and optional XLSX report back to Supabase Storage. The admin then
-runs Adobe PDF Accessibility Checker automatically, receives passed, failed,
-and manual-review counts, and can download the private JSON checker report.
+tagged PDF and optional XLSX report back to Supabase Storage. Before replacing
+the website copy, it saves a private `-pre-auto-repair.pdf` backup. The admin
+then runs Adobe PDF Accessibility Checker automatically, receives passed,
+failed, and manual-review counts, can compare the original and repaired PDFs,
+and can restore the original from the review panel. The private JSON checker
+report remains available for download.
+The automatic repair also sets the PDF title from the county record, displays
+that title in the PDF viewer title bar, sets the primary language to `en-US`,
+and makes each page's tab order follow the document structure.
 Both Adobe operations use separate start and status requests so processing
 does not hold one Edge Function request open long enough to reach the hosted
 runtime timeout.

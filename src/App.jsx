@@ -1,6 +1,7 @@
 import { useEffect, useState } from 'react'
 import countyLogo from './assets/lee-logo.avif'
 import heroImage from './assets/lee-county-hero.webp'
+import { ADOBE_ACCESSIBILITY_HELP_URL, getAccessibilityGuidance } from './data/accessibilityGuidance'
 import { historicalMeetingDocuments } from './data/historicalMeetings'
 import { DOCUMENT_BUCKET, initialAuthRedirect, isSupabaseConfigured, supabase } from './lib/supabase'
 import './App.css'
@@ -21,6 +22,16 @@ function routePath(pathname) {
   return relativePath.replace(/\/+$/, '') || '/'
 }
 
+function documentStorageFiles(storagePath) {
+  if (!storagePath?.toLowerCase().endsWith('.pdf')) return storagePath ? [storagePath] : []
+  return [
+    storagePath,
+    storagePath.replace(/\.pdf$/i, '-pre-auto-repair.pdf'),
+    storagePath.replace(/\.pdf$/i, '-accessibility-report.xlsx'),
+    storagePath.replace(/\.pdf$/i, '-accessibility-check.json'),
+  ]
+}
+
 function invitationNeedsAccountSetup() {
   if (typeof window === 'undefined') return false
   try {
@@ -37,6 +48,127 @@ function clearInvitationAccountSetup() {
   } catch {
     // The dialog can still close when browser storage is unavailable.
   }
+}
+
+function AccessibilityRuleHelp({ category, rule }) {
+  const statusClass = accessibilityRuleStatusClass(rule.status)
+  if (statusClass === 'passed') return null
+  const guidance = getAccessibilityGuidance(category, rule.name, rule.status)
+
+  return (
+    <details className="accessibility-rule-help">
+      <summary>Explain this result and show repair steps</summary>
+      <div className="accessibility-rule-help-body">
+        <div>
+          <h5>What this means</h5>
+          <p>{guidance.explanation}</p>
+        </div>
+        <div>
+          <h5>{statusClass === 'failed' ? 'How to fix it' : 'How to review it'}</h5>
+          <ol>{guidance.steps.map((step) => <li key={step}>{step}</li>)}</ol>
+        </div>
+        <p className="accessibility-rule-verify"><strong>Verify:</strong> {guidance.verification}</p>
+        <a href={ADOBE_ACCESSIBILITY_HELP_URL} target="_blank" rel="noreferrer">Open Adobe’s complete accessibility repair guide</a>
+      </div>
+    </details>
+  )
+}
+
+function accessibilityRuleStatusClass(status) {
+  const normalizedStatus = String(status || '').toLowerCase()
+  if (normalizedStatus.startsWith('passed')) return 'passed'
+  if (normalizedStatus.startsWith('failed')) return 'failed'
+  return 'manual'
+}
+
+const automaticallyRepairedChecks = [
+  { label: 'Primary language', names: ['primary language', 'document language'] },
+  { label: 'Document title', names: ['title', 'document title'] },
+  { label: 'Tab order', names: ['tab order'] },
+]
+
+function normalizeAccessibilityRuleName(value) {
+  return String(value || '').toLowerCase().replace(/[^a-z0-9]+/g, ' ').trim()
+}
+
+function findAccessibilityRule(sections, names) {
+  const normalizedNames = names.map(normalizeAccessibilityRuleName)
+  return sections.flatMap((section) => section.rules || [])
+    .find((rule) => normalizedNames.includes(normalizeAccessibilityRuleName(rule.name)))
+}
+
+function isAutomaticallyRepairedCheck(ruleName) {
+  const normalizedName = normalizeAccessibilityRuleName(ruleName)
+  return automaticallyRepairedChecks.some((check) => check.names.includes(normalizedName))
+}
+
+function AccessibilityRepairResults({ report, onRestore, restoring }) {
+  const repair = report.repair || {}
+  const hasCheckSummary = ['passed', 'failed', 'needsManualCheck'].some((key) => Object.hasOwn(report.summary, key))
+  const failedCount = Number(report.summary.failed) || 0
+  const manualCount = Number(report.summary.needsManualCheck) || 0
+  const currentState = !hasCheckSummary
+    ? { className: 'unknown', title: 'The current check could not be completed', text: 'Review the repaired PDF or restore the original, then run the check again.' }
+    : failedCount > 0
+      ? { className: 'failed', title: `${failedCount} check${failedCount === 1 ? '' : 's'} still failing`, text: 'The repair finished, but this PDF still needs the failed items below corrected.' }
+      : manualCount > 0
+        ? { className: 'manual', title: 'Automated checks passed; manual review remains', text: `${manualCount} item${manualCount === 1 ? '' : 's'} must still be verified by a person.` }
+        : { className: 'passed', title: 'All reported checks currently pass', text: 'Complete the final keyboard, zoom/reflow, and screen-reader review before publishing.' }
+  const autoFixChecks = automaticallyRepairedChecks.map((check) => {
+    const rule = findAccessibilityRule(report.sections, check.names)
+    return { ...check, rule, statusClass: rule ? accessibilityRuleStatusClass(rule.status) : 'unknown' }
+  })
+
+  return (
+    <details className="admin-accessibility-results" open>
+      <summary>Review auto-repair changes and accessibility results</summary>
+      <div className="admin-accessibility-results-body">
+        <div className="admin-accessibility-results-heading">
+          <div><p className="eyebrow">Adobe Accessibility Checker</p><h3>{report.title}</h3></div>
+          <p>Use this report as a repair checklist. A passed automated check does not by itself prove that a PDF is fully accessible; every manual-review item and the final human tests still need to be completed.</p>
+        </div>
+
+        <section className={`accessibility-current-state ${currentState.className}`} aria-label="Current repaired PDF status"><span>Current repaired PDF status</span><strong>{currentState.title}</strong><p>{currentState.text}</p></section>
+
+        {hasCheckSummary && <div className="admin-accessibility-summary" aria-label="Accessibility check summary">
+          <div className="passed"><strong>{report.summary.passed || 0}</strong><span>Passed</span></div>
+          <div className="failed"><strong>{report.summary.failed || 0}</strong><span>Failed</span></div>
+          <div className="manual"><strong>{report.summary.needsManualCheck || 0}</strong><span>Manual review</span></div>
+        </div>}
+
+        <section className="auto-repair-review" aria-labelledby="auto-repair-review-title">
+          <div className="auto-repair-review-heading">
+            <div><p className="eyebrow">Auto-repair completed</p><h4 id="auto-repair-review-title">Review the repaired PDF</h4></div>
+            <span>Original backed up</span>
+          </div>
+          <p>Adobe repaired the document structure and the county’s safe document settings before checking the updated PDF again.</p>
+          {repair.automaticRepairs?.length > 0 && <div className="auto-repair-applied"><h5>Automatically repaired</h5><ul>{repair.automaticRepairs.map((item) => <li key={item}>{item}</li>)}</ul></div>}
+          <div className="auto-repair-verification"><h5>Current status of automatic fixes</h5><ul>{autoFixChecks.map((check) => <li className={check.statusClass} key={check.label}><span aria-hidden="true">{check.statusClass === 'passed' ? '✓' : check.statusClass === 'failed' ? '!' : '?'}</span><div><strong>{check.label}</strong><p>{check.statusClass === 'passed' ? 'Fixed and verified by the post-repair Adobe check.' : check.statusClass === 'failed' ? 'The repair was applied, but Adobe still reports this check as failed.' : check.statusClass === 'manual' ? 'The setting was applied, but Adobe requires manual verification.' : 'Adobe did not return a current result for this check.'}</p></div></li>)}</ul></div>
+          <ul>
+            <li><strong>Compare both files.</strong><span>Look for missing content, changed layout, incorrect OCR text, or an unexpected reading sequence.</span></li>
+            <li><strong>Review structural changes.</strong><span>Inspect headings, lists, tables, figures, links, and the tag tree in Acrobat Pro.</span></li>
+            <li><strong>Resolve the remaining results below.</strong><span>Automated repair cannot judge meaning, contrast, complex relationships, or whether alternative text is accurate.</span></li>
+          </ul>
+          {(repair.originalSignedUrl || repair.repairedSignedUrl) && <><div className="auto-repair-review-actions">{repair.originalSignedUrl && <a href={repair.originalSignedUrl} target="_blank" rel="noreferrer">Open original backup</a>}{repair.repairedSignedUrl && <a href={repair.repairedSignedUrl} target="_blank" rel="noreferrer">Open repaired PDF</a>}</div><p className="auto-repair-link-note">Private comparison links expire after one hour.</p></>}
+          {repair.originalPath && repair.outputPath && <div className="auto-repair-restore"><p>The repaired PDF is currently active. If the comparison reveals damage or worse accessibility, restore the private backup.</p><button type="button" onClick={onRestore} disabled={restoring}>{restoring ? 'Restoring…' : 'Restore original PDF'}</button></div>}
+        </section>
+
+        <section className="accessibility-remediation-workflow" aria-labelledby="accessibility-remediation-title">
+          <div><p className="eyebrow">Remediation workflow</p><h4 id="accessibility-remediation-title">Work toward an accessible final PDF</h4></div>
+          <ol>
+            <li><strong>Compare the repaired PDF with its original backup.</strong> Keep the repair only after checking that content and layout remain correct.</li>
+            <li><strong>Correct every failed rule below.</strong> Expand a result for its explanation, Acrobat steps, and verification test.</li>
+            <li><strong>Complete every manual review.</strong> Check reading order, alternative-text meaning, color contrast, tables, forms, keyboard access, and links with a person.</li>
+            <li><strong>Run Acrobat’s accessibility check again.</strong> Continue until there are no failures or unresolved manual checks.</li>
+            <li><strong>Test with people and assistive technology.</strong> At minimum, test keyboard navigation, 200% zoom/reflow, text selection/search, and a screen reader before publishing.</li>
+          </ol>
+          <p><strong>Important:</strong> Passing the automated checker is not a certification of WCAG or PDF/UA conformance. After hand-fixing tags in Acrobat, replace the website PDF with that corrected file; do not auto-tag the corrected file again because auto-tagging can rebuild its tag structure.</p>
+        </section>
+
+        <div className="admin-accessibility-sections">{report.sections.map((section) => <section key={section.category}><h4>{section.category}</h4><ul>{section.rules.map((rule, index) => { const statusClass = accessibilityRuleStatusClass(rule.status); const statusLabel = isAutomaticallyRepairedCheck(rule.name) ? statusClass === 'passed' ? 'Fixed · passed' : statusClass === 'failed' ? 'Still failed' : rule.status : rule.status; return <li key={`${rule.name}-${index}`}><span className={`accessibility-rule-status ${statusClass}`}>{statusLabel}</span><div><strong>{rule.name}</strong>{rule.description && <p>{rule.description}</p>}<AccessibilityRuleHelp category={section.category} rule={rule} /></div></li> })}</ul></section>)}</div>
+      </div>
+    </details>
+  )
 }
 
 const quickLinks = [
@@ -1905,7 +2037,7 @@ function AdminPage() {
       return
     }
 
-    if (newStoragePath && editingNotice?.attachment_path) await supabase.storage.from(DOCUMENT_BUCKET).remove([editingNotice.attachment_path])
+    if (newStoragePath && editingNotice?.attachment_path) await supabase.storage.from(DOCUMENT_BUCKET).remove(documentStorageFiles(editingNotice.attachment_path))
     setMessage(editingNotice ? 'Notice updated successfully.' : 'Notice created successfully.')
     resetNoticeEditor()
     noticeEditor.reset()
@@ -1933,7 +2065,7 @@ function AdminPage() {
       setMessage(`Could not delete the notice: ${error.message}`)
       return
     }
-    if (item.attachment_path) await supabase.storage.from(DOCUMENT_BUCKET).remove([item.attachment_path])
+    if (item.attachment_path) await supabase.storage.from(DOCUMENT_BUCKET).remove(documentStorageFiles(item.attachment_path))
     if (editingNotice?.id === item.id) resetNoticeEditor()
     setMessage('Notice deleted.')
     await loadAdminNotices()
@@ -2012,7 +2144,7 @@ function AdminPage() {
       return
     }
 
-    if (newStoragePath && editingMeeting?.storage_path) await supabase.storage.from(DOCUMENT_BUCKET).remove([editingMeeting.storage_path])
+    if (newStoragePath && editingMeeting?.storage_path) await supabase.storage.from(DOCUMENT_BUCKET).remove(documentStorageFiles(editingMeeting.storage_path))
     setMessage(editingMeeting ? 'Meeting record updated.' : 'Meeting record uploaded.')
     resetMeetingEditor()
     meetingEditor.reset()
@@ -2038,7 +2170,7 @@ function AdminPage() {
       setMessage(`Could not delete the meeting record: ${error.message}`)
       return
     }
-    if (item.storage_path) await supabase.storage.from(DOCUMENT_BUCKET).remove([item.storage_path])
+    if (item.storage_path) await supabase.storage.from(DOCUMENT_BUCKET).remove(documentStorageFiles(item.storage_path))
     if (editingMeeting?.id === item.id) resetMeetingEditor()
     setMessage('Meeting record deleted.')
     await loadAdminMeetingDocuments()
@@ -2126,33 +2258,38 @@ function AdminPage() {
     return data
   }
 
-  async function autoTagPdf(storagePath, title, reloadDocuments) {
-    if (!window.confirm(`Auto-tag and check “${title}” with Adobe? The tagged PDF will replace the current stored file.`)) return
+  async function autoRepairPdf(storagePath, title, reloadDocuments) {
+    if (!window.confirm(`Auto-repair “${title}” with Adobe? A private backup will be saved first, then the repaired PDF will replace the current stored file for review.`)) return
 
     setTaggingPath(storagePath)
     setReportDownloads([])
     setAccessibilityReport(null)
-    setMessage(`Uploading “${title}” to Adobe Auto-Tag…`)
+    setMessage(`Saving a private backup and sending “${title}” to Adobe Auto-Tag…`)
 
     try {
       const job = await invokeAdobeAutoTag({
         action: 'start',
         sourcePath: storagePath,
+        documentTitle: title,
+        language: 'en-US',
         generateReport: true,
       })
       let waitedSeconds = 0
       let result = job
 
       while (result.status !== 'done') {
-        if (waitedSeconds >= 10 * 60) throw new Error('Adobe is still processing this PDF. Try Auto-tag & check again in a few minutes.')
+        if (waitedSeconds >= 10 * 60) throw new Error('Adobe is still processing this PDF. Try Auto-repair again in a few minutes.')
         const waitSeconds = Math.min(Math.max(1, Math.min(Number(result.retryAfter) || 3, 15)), 10 * 60 - waitedSeconds)
         waitedSeconds += waitSeconds
-        setMessage(`Adobe is auto-tagging “${title}”…`)
+        setMessage(`Adobe is repairing the structure of “${title}”…`)
         await new Promise((resolve) => window.setTimeout(resolve, waitSeconds * 1000))
         result = await invokeAdobeAutoTag({
           action: 'status',
           pollingUrl: job.pollingUrl,
           outputPath: job.outputPath,
+          originalPath: job.originalPath,
+          documentTitle: job.documentTitle,
+          language: job.language,
           reportPath: job.reportPath,
           generateReport: job.generateReport,
         })
@@ -2173,7 +2310,7 @@ function AdminPage() {
         waitedSeconds = 0
 
         while (checkerResult.status !== 'done') {
-          if (waitedSeconds >= 10 * 60) throw new Error('Adobe is still checking this PDF. Run Auto-tag & check again in a few minutes.')
+          if (waitedSeconds >= 10 * 60) throw new Error('Adobe is still checking this PDF. Run Auto-repair again in a few minutes.')
           const waitSeconds = Math.min(Math.max(1, Math.min(Number(checkerResult.retryAfter) || 3, 15)), 10 * 60 - waitedSeconds)
           waitedSeconds += waitSeconds
           await new Promise((resolve) => window.setTimeout(resolve, waitSeconds * 1000))
@@ -2190,8 +2327,8 @@ function AdminPage() {
         const passed = Number(summary.passed) || 0
         const manual = Number(summary.needsManualCheck) || 0
         const completedMessage = failed > 0
-          ? `“${title}” is tagged. Adobe’s automated check found ${failed} item${failed === 1 ? '' : 's'} needing correction; ${passed} passed and ${manual} need manual review.`
-          : `“${title}” is tagged. All ${passed} automated checks passed; ${manual} item${manual === 1 ? '' : 's'} still need manual review.`
+          ? `“${title}” was auto-repaired. Review the changes: ${failed} item${failed === 1 ? '' : 's'} still need correction; ${passed} passed and ${manual} need manual review.`
+          : `“${title}” was auto-repaired. Review the changes: all ${passed} automated checks passed; ${manual} item${manual === 1 ? '' : 's'} still need manual review.`
         if (checkerResult.reportSignedUrl) downloads.push({ url: checkerResult.reportSignedUrl, label: 'Download accessibility check (JSON)' })
         setMessage(completedMessage)
         setReportDownloads(downloads.map((download) => ({ ...download, message: completedMessage })))
@@ -2199,15 +2336,61 @@ function AdminPage() {
           title,
           summary,
           sections: Array.isArray(checkerResult.sections) ? checkerResult.sections : [],
+          repair: {
+            originalPath: result.originalPath,
+            outputPath: result.outputPath,
+            originalSignedUrl: result.originalSignedUrl,
+            repairedSignedUrl: result.repairedSignedUrl,
+            automaticRepairs: Array.isArray(result.automaticRepairs) ? result.automaticRepairs : [],
+          },
           message: completedMessage,
         })
       } catch (checkerError) {
-        const completedMessage = `“${title}” was auto-tagged, but its automated accessibility check failed: ${checkerError instanceof Error ? checkerError.message : 'Unexpected error.'}`
+        const completedMessage = `“${title}” was auto-repaired, but its automated accessibility check failed. Review the repaired file or restore the backup: ${checkerError instanceof Error ? checkerError.message : 'Unexpected error.'}`
         setMessage(completedMessage)
         setReportDownloads(downloads.map((download) => ({ ...download, message: completedMessage })))
+        setAccessibilityReport({
+          title,
+          summary: {},
+          sections: [],
+          repair: {
+            originalPath: result.originalPath,
+            outputPath: result.outputPath,
+            originalSignedUrl: result.originalSignedUrl,
+            repairedSignedUrl: result.repairedSignedUrl,
+            automaticRepairs: Array.isArray(result.automaticRepairs) ? result.automaticRepairs : [],
+          },
+          message: completedMessage,
+        })
       }
     } catch (error) {
-      setMessage(`Auto-tagging failed: ${error instanceof Error ? error.message : 'Unexpected error.'}`)
+      setMessage(`Auto-repair failed: ${error instanceof Error ? error.message : 'Unexpected error.'}`)
+    } finally {
+      setTaggingPath('')
+    }
+  }
+
+  async function restoreAutoRepairOriginal() {
+    const repair = accessibilityReport?.repair
+    if (!repair?.originalPath || !repair?.outputPath) return
+    if (!window.confirm(`Restore the original PDF for “${accessibilityReport.title}”? This will replace the repaired website copy.`)) return
+
+    setTaggingPath(repair.outputPath)
+    setMessage(`Restoring the original PDF for “${accessibilityReport.title}”…`)
+    try {
+      await invokeAdobeAutoTag({
+        action: 'restore-backup',
+        backupPath: repair.originalPath,
+        outputPath: repair.outputPath,
+      })
+      await Promise.all([loadAdminNotices(), loadAdminMeetingDocuments(), loadAdminDocuments()])
+      setReportDownloads([])
+      setAccessibilityReport(null)
+      setMessage(`The original PDF for “${accessibilityReport.title}” has been restored.`)
+    } catch (error) {
+      const failedMessage = `The original PDF could not be restored: ${error instanceof Error ? error.message : 'Unexpected error.'}`
+      setMessage(failedMessage)
+      setAccessibilityReport((current) => current ? { ...current, message: failedMessage } : current)
     } finally {
       setTaggingPath('')
     }
@@ -2226,7 +2409,7 @@ function AdminPage() {
   async function deleteDocument(document) {
     if (!window.confirm(`Delete “${document.title}”? This permanently removes the file.`)) return
     setMessage('')
-    const { error: storageError } = await supabase.storage.from(DOCUMENT_BUCKET).remove([document.storage_path])
+    const { error: storageError } = await supabase.storage.from(DOCUMENT_BUCKET).remove(documentStorageFiles(document.storage_path))
     if (storageError) {
       setMessage(`Could not remove the file: ${storageError.message}`)
       return
@@ -2271,7 +2454,7 @@ function AdminPage() {
             <div className="admin-toolbar"><div><p className="eyebrow">County Content</p><h2>Manage public content</h2><p>Signed in as {session.user.email}</p></div><button type="button" className="button-quiet" onClick={() => supabase.auth.signOut()}>Sign out</button></div>
             <div className="admin-tabs" role="tablist" aria-label="Content type"><button type="button" role="tab" aria-selected={adminView === 'events'} onClick={() => setAdminView('events')}>Events <span title="Pending approval">{pendingEventCount}</span></button><button type="button" role="tab" aria-selected={adminView === 'notices'} onClick={() => setAdminView('notices')}>Public notices <span>{notices.length}</span></button><button type="button" role="tab" aria-selected={adminView === 'meetings'} onClick={() => setAdminView('meetings')}>Meetings <span>{meetingDocuments.length}</span></button><button type="button" role="tab" aria-selected={adminView === 'documents'} onClick={() => setAdminView('documents')}>Document library <span>{documents.length}</span></button></div>
             {message && <div className="admin-message" role="status"><p>{message}</p>{reportDownloads.some((report) => report.message === message) && <div className="admin-report-links">{reportDownloads.filter((report) => report.message === message).map((report) => <a href={report.url} target="_blank" rel="noreferrer" download key={report.label}>{report.label}</a>)}</div>}</div>}
-            {accessibilityReport?.message === message && <details className="admin-accessibility-results"><summary>View accessibility check results</summary><div className="admin-accessibility-results-body"><div className="admin-accessibility-results-heading"><div><p className="eyebrow">Adobe Accessibility Checker</p><h3>{accessibilityReport.title}</h3></div><p>Automated checks identify technical issues. Rules marked for manual review still require a person to verify the document.</p></div><div className="admin-accessibility-summary" aria-label="Accessibility check summary"><div className="passed"><strong>{accessibilityReport.summary.passed || 0}</strong><span>Passed</span></div><div className="failed"><strong>{accessibilityReport.summary.failed || 0}</strong><span>Failed</span></div><div className="manual"><strong>{accessibilityReport.summary.needsManualCheck || 0}</strong><span>Manual review</span></div></div><div className="admin-accessibility-sections">{accessibilityReport.sections.map((section) => <section key={section.category}><h4>{section.category}</h4><ul>{section.rules.map((rule, index) => { const statusClass = rule.status === 'Passed' ? 'passed' : rule.status === 'Failed' ? 'failed' : 'manual'; return <li key={`${rule.name}-${index}`}><span className={`accessibility-rule-status ${statusClass}`}>{rule.status}</span><div><strong>{rule.name}</strong>{rule.description && <p>{rule.description}</p>}</div></li> })}</ul></section>)}</div></div></details>}
+            {accessibilityReport?.message === message && <AccessibilityRepairResults report={accessibilityReport} onRestore={restoreAutoRepairOriginal} restoring={taggingPath === accessibilityReport.repair?.outputPath} />}
 
             {adminView === 'events' && <div className="admin-layout event-admin-layout">
               {editingAdminEvent ? <form className="document-upload-form event-editor" onSubmit={handleAdminEventSubmit}>
@@ -2309,7 +2492,7 @@ function AdminPage() {
                 <div className="admin-field-grid"><label>Status<select value={noticeForm.status} onChange={(event) => setNoticeForm({ ...noticeForm, status: event.target.value })}><option value="draft">Draft</option><option value="published">Published</option><option value="archived">Archived</option></select></label><label className="publish-check"><input type="checkbox" checked={noticeForm.is_featured} onChange={(event) => setNoticeForm({ ...noticeForm, is_featured: event.target.checked })} /> Feature this notice</label></div>
                 <div className="notice-form-actions"><button type="submit" disabled={busy}>{busy ? 'Saving…' : editingNotice ? 'Save changes' : 'Create notice'}</button><button type="button" className="button-secondary" onClick={() => setPreviewNotice('form')}>Preview</button>{editingNotice && <button type="button" className="button-secondary" onClick={resetNoticeEditor}>Cancel edit</button>}</div>
               </form>
-              <div className="admin-document-list admin-notice-list"><div className="admin-list-heading"><h3>All public notices</h3><span>{notices.length}</span></div>{notices.length === 0 ? <div className="admin-empty">No notices have been created.</div> : notices.map((item) => <article key={item.id}><div><span className={`status ${item.status}`}>{item.status}</span>{item.is_featured && <span className="status featured">Featured</span>}<p>{item.notice_type} · {formatDocumentDate(item.posted_at)}</p><h4>{item.title}</h4><small>{item.attachment_name ? `${item.attachment_name} · ${formatFileSize(item.attachment_size)}` : 'No PDF attachment'}{item.expires_at ? ` · Archives ${formatDocumentDate(item.expires_at)}` : ''}</small></div><div className="admin-document-actions"><button type="button" onClick={() => editNotice(item)}>Edit</button><button type="button" onClick={() => setPreviewNotice(item)}>Preview</button><button type="button" onClick={() => setNoticeStatus(item, item.status === 'published' ? 'draft' : 'published')}>{item.status === 'published' ? 'Unpublish' : 'Publish'}</button>{item.status !== 'archived' && <button type="button" onClick={() => setNoticeStatus(item, 'archived')}>Archive</button>}{item.attachment_path && <button type="button" disabled={Boolean(taggingPath)} onClick={() => autoTagPdf(item.attachment_path, item.title, loadAdminNotices)}>{taggingPath === item.attachment_path ? 'Processing…' : 'Auto-tag & check'}</button>}<button type="button" className="danger" onClick={() => deletePublicNotice(item)}>Delete</button></div></article>)}</div>
+              <div className="admin-document-list admin-notice-list"><div className="admin-list-heading"><h3>All public notices</h3><span>{notices.length}</span></div>{notices.length === 0 ? <div className="admin-empty">No notices have been created.</div> : notices.map((item) => <article key={item.id}><div><span className={`status ${item.status}`}>{item.status}</span>{item.is_featured && <span className="status featured">Featured</span>}<p>{item.notice_type} · {formatDocumentDate(item.posted_at)}</p><h4>{item.title}</h4><small>{item.attachment_name ? `${item.attachment_name} · ${formatFileSize(item.attachment_size)}` : 'No PDF attachment'}{item.expires_at ? ` · Archives ${formatDocumentDate(item.expires_at)}` : ''}</small></div><div className="admin-document-actions"><button type="button" onClick={() => editNotice(item)}>Edit</button><button type="button" onClick={() => setPreviewNotice(item)}>Preview</button><button type="button" onClick={() => setNoticeStatus(item, item.status === 'published' ? 'draft' : 'published')}>{item.status === 'published' ? 'Unpublish' : 'Publish'}</button>{item.status !== 'archived' && <button type="button" onClick={() => setNoticeStatus(item, 'archived')}>Archive</button>}{item.attachment_path && <button type="button" disabled={Boolean(taggingPath)} onClick={() => autoRepairPdf(item.attachment_path, item.title, loadAdminNotices)}>{taggingPath === item.attachment_path ? 'Repairing…' : 'Auto-repair'}</button>}<button type="button" className="danger" onClick={() => deletePublicNotice(item)}>Delete</button></div></article>)}</div>
             </div>}
 
             {adminView === 'meetings' && <div className="admin-layout meeting-admin-layout">
@@ -2322,7 +2505,7 @@ function AdminPage() {
                 <label className="publish-check"><input type="checkbox" checked={meetingForm.is_published} onChange={(event) => setMeetingForm({ ...meetingForm, is_published: event.target.checked })} /> Publish immediately</label>
                 <div className="notice-form-actions"><button type="submit" disabled={busy}>{busy ? 'Saving…' : editingMeeting ? 'Save changes' : 'Upload record'}</button>{editingMeeting && <button type="button" className="button-secondary" onClick={resetMeetingEditor}>Cancel edit</button>}</div>
               </form>
-              <div className="admin-document-list admin-meeting-list"><div className="admin-list-heading admin-meeting-heading"><div><h3>Meeting records</h3><small>{adminYearMeetingDocuments.length} files</small></div><select aria-label="Filter meeting records by year" value={adminMeetingYear} onChange={(event) => setAdminMeetingYear(event.target.value)}>{meetingYears.map((item) => <option key={item}>{item}</option>)}</select></div>{adminYearMeetingDocuments.length === 0 ? <div className="admin-empty">No meeting records for {adminMeetingYear}.</div> : adminYearMeetingDocuments.map((item) => <article key={item.id}><div><span className={item.is_published ? 'status published' : 'status draft'}>{item.is_published ? 'Published' : 'Draft'}</span><span className="status meeting-document-status">{item.document_type}</span><p>{formatDocumentDate(item.meeting_date)} · {item.meeting_type}</p><h4>{item.title}</h4><small>{item.file_name ? `${item.file_name} · ${formatFileSize(item.file_size)}` : 'Legacy county website link'}</small></div><div className="admin-document-actions"><button type="button" onClick={() => editMeetingDocument(item)}>Edit</button><button type="button" onClick={() => toggleMeetingPublished(item)}>{item.is_published ? 'Unpublish' : 'Publish'}</button>{item.storage_path && <button type="button" disabled={Boolean(taggingPath)} onClick={() => autoTagPdf(item.storage_path, item.title, loadAdminMeetingDocuments)}>{taggingPath === item.storage_path ? 'Processing…' : 'Auto-tag & check'}</button>}<button type="button" className="danger" onClick={() => deleteMeetingDocument(item)}>Delete</button></div></article>)}</div>
+              <div className="admin-document-list admin-meeting-list"><div className="admin-list-heading admin-meeting-heading"><div><h3>Meeting records</h3><small>{adminYearMeetingDocuments.length} files</small></div><select aria-label="Filter meeting records by year" value={adminMeetingYear} onChange={(event) => setAdminMeetingYear(event.target.value)}>{meetingYears.map((item) => <option key={item}>{item}</option>)}</select></div>{adminYearMeetingDocuments.length === 0 ? <div className="admin-empty">No meeting records for {adminMeetingYear}.</div> : adminYearMeetingDocuments.map((item) => <article key={item.id}><div><span className={item.is_published ? 'status published' : 'status draft'}>{item.is_published ? 'Published' : 'Draft'}</span><span className="status meeting-document-status">{item.document_type}</span><p>{formatDocumentDate(item.meeting_date)} · {item.meeting_type}</p><h4>{item.title}</h4><small>{item.file_name ? `${item.file_name} · ${formatFileSize(item.file_size)}` : 'Legacy county website link'}</small></div><div className="admin-document-actions"><button type="button" onClick={() => editMeetingDocument(item)}>Edit</button><button type="button" onClick={() => toggleMeetingPublished(item)}>{item.is_published ? 'Unpublish' : 'Publish'}</button>{item.storage_path && <button type="button" disabled={Boolean(taggingPath)} onClick={() => autoRepairPdf(item.storage_path, item.title, loadAdminMeetingDocuments)}>{taggingPath === item.storage_path ? 'Repairing…' : 'Auto-repair'}</button>}<button type="button" className="danger" onClick={() => deleteMeetingDocument(item)}>Delete</button></div></article>)}</div>
             </div>}
 
             {adminView === 'documents' && <div className="admin-layout">
@@ -2336,7 +2519,7 @@ function AdminPage() {
                 <label className="publish-check"><input type="checkbox" checked={form.is_published} onChange={(event) => setForm({ ...form, is_published: event.target.checked })} /> Publish immediately</label>
                 <button type="submit" disabled={busy}>{busy ? 'Uploading…' : 'Upload document'}</button>
               </form>
-              <div className="admin-document-list"><div className="admin-list-heading"><h3>All documents</h3><span>{documents.length}</span></div>{documents.length === 0 ? <div className="admin-empty">No documents have been uploaded.</div> : documents.map((document) => <article key={document.id}><div><span className={document.is_published ? 'status published' : 'status draft'}>{document.is_published ? 'Published' : 'Draft'}</span><p>{document.category} · {formatDocumentDate(document.document_date)}</p><h4>{document.title}</h4><small>{document.file_name} · {formatFileSize(document.file_size)}</small></div><div className="admin-document-actions"><button type="button" onClick={() => togglePublished(document)}>{document.is_published ? 'Unpublish' : 'Publish'}</button>{document.storage_path?.toLowerCase().endsWith('.pdf') && <button type="button" disabled={Boolean(taggingPath)} onClick={() => autoTagPdf(document.storage_path, document.title, loadAdminDocuments)}>{taggingPath === document.storage_path ? 'Processing…' : 'Auto-tag & check'}</button>}<button type="button" className="danger" onClick={() => deleteDocument(document)}>Delete</button></div></article>)}</div>
+              <div className="admin-document-list"><div className="admin-list-heading"><h3>All documents</h3><span>{documents.length}</span></div>{documents.length === 0 ? <div className="admin-empty">No documents have been uploaded.</div> : documents.map((document) => <article key={document.id}><div><span className={document.is_published ? 'status published' : 'status draft'}>{document.is_published ? 'Published' : 'Draft'}</span><p>{document.category} · {formatDocumentDate(document.document_date)}</p><h4>{document.title}</h4><small>{document.file_name} · {formatFileSize(document.file_size)}</small></div><div className="admin-document-actions"><button type="button" onClick={() => togglePublished(document)}>{document.is_published ? 'Unpublish' : 'Publish'}</button>{document.storage_path?.toLowerCase().endsWith('.pdf') && <button type="button" disabled={Boolean(taggingPath)} onClick={() => autoRepairPdf(document.storage_path, document.title, loadAdminDocuments)}>{taggingPath === document.storage_path ? 'Repairing…' : 'Auto-repair'}</button>}<button type="button" className="danger" onClick={() => deleteDocument(document)}>Delete</button></div></article>)}</div>
             </div>}
           </div>}
         </div>
